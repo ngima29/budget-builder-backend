@@ -1,11 +1,11 @@
 import * as Sequelize from "sequelize";
-import { ExpenseModelInterface} from '../interfaces';
+import { CashFlowModelInterface} from '../interfaces';
 import { Database } from "./instance";
-
+import {CashFlowTypeEnum} from "../enums"
 const sequelize = Database.sequelize;
 
-const Expense = sequelize.define<ExpenseModelInterface>(
-    'expenses',
+const CashFlow = sequelize.define<CashFlowModelInterface>(
+    'cash_flows',
     {
         id: {
             type: Sequelize.INTEGER,
@@ -52,6 +52,11 @@ const Expense = sequelize.define<ExpenseModelInterface>(
             type: Sequelize.DATEONLY,
             allowNull: false,   
         },
+        type: {
+            type: Sequelize.ENUM(CashFlowTypeEnum.expenses,CashFlowTypeEnum.income),
+            allowNull: false,
+            
+        }
 
     },{
         timestamps :true,
@@ -60,4 +65,4 @@ const Expense = sequelize.define<ExpenseModelInterface>(
     },
 );
 
-export { Expense};
+export { CashFlow};

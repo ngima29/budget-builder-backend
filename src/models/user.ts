@@ -34,6 +34,7 @@ const User = sequelize.define<UserModelInterface>(
   {
     timestamps: true,
     paranoid: true,
+    underscored:true,
     indexes: [
       {
         unique: true,

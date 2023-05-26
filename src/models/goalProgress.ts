@@ -47,6 +47,7 @@ const GoalProgress = sequelize.define<GoalProgressModelInterface>(
     },{
         timestamps: true,
         paranoid: true,
+        underscored:true,
         indexes: [
             {
                 unique: true,

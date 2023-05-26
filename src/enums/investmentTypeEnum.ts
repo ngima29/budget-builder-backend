@@ -1,7 +1,7 @@
 export enum InvestmentTypeEnum {
     share = 'share',
-    mutualFund = 'mutual fund',
+    mutual_fund = 'mutual_fund',
     sip = 'sip', 
-    realEstate = 'Real Estate', 
+    real_estate = 'real_estate', 
     others = 'others'
 }

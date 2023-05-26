@@ -27,6 +27,7 @@ const Category = sequelize.define<CategoryModelInterface>(
     },{
         timestamps :true,
         paranoid: true,
+        underscored:true,
         indexes: [
             {
                 unique: true,

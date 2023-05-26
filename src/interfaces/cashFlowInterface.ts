@@ -1,15 +1,16 @@
 import * as Sequelize from 'sequelize';
-
-export interface InputIncomeInterface {
+import {CashFlowTypeEnum} from '../enums'
+export interface InputCashFlowInterface {
     userId: Sequelize.CreationOptional<number>;
     categoryId: Sequelize.CreationOptional<number>;
     goalId? : Sequelize.CreationOptional<number>; // enum  category_Table['salary','investment','rent','partTimeJob','others']
     amount: number;
     description?: string;
     date: string;
+    type: CashFlowTypeEnum;
 }
 
-export interface IncomeInterface {
+export interface CashFlowInterface {
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
     categoryId: Sequelize.CreationOptional<number>;
@@ -17,7 +18,8 @@ export interface IncomeInterface {
     amount: number;
     description: string;
     date: string;
+    type: CashFlowTypeEnum;
 }
 
-export interface IncomeModelInterface extends Sequelize.Model<Partial<IncomeInterface>,Partial<InputIncomeInterface>>,
-IncomeInterface {}
+export interface CashFlowModelInterface extends Sequelize.Model<Partial<CashFlowInterface>,Partial<InputCashFlowInterface>>,
+CashFlowInterface {}

@@ -1,9 +1,11 @@
 dist
 node_modules
 .env
-.env.docker
+
 logs
-yarn-lock
 .yarnrc.yml
-*-lock.json
+.yarn
+.yarn.lock
+*lock.json
 .vscode
+src/index.ts

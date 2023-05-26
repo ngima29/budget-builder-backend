@@ -52,6 +52,7 @@ const Goal = sequelize.define<GoalModelInterface>(
     },{
         timestamps: true,
         paranoid: true,
+        underscored:true,
         indexes: [
             {
                 unique: true,
