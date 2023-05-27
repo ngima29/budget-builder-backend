@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import bcrypt from "bcrypt";
 
 class Password {
   private static instance: Password;
@@ -12,31 +12,18 @@ class Password {
     return Password.instance;
   }
 
-  generate(password: string): { salt: string; hash: string } {
-    const salt = crypto.randomBytes(32).toString("hex");
-    const hash = crypto
-      .pbkdf2Sync(password, salt, 10000, 64, "sha512")
-      .toString("hex");
-    return {
-      salt: salt,
-      hash: hash,
-    };
+  async generate(password: string):Promise<string>  {
+    const saltRounds = 10; //password hash
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(password, salt);
+     return hash;
   }
 
-  validate({
-    password,
-    hash,
-    salt,
-  }: {
-    password: string;
-    hash: string;
-    salt: string;
-  }): boolean {
-    const hashVerify = crypto
-      .pbkdf2Sync(password, salt, 10000, 64, "sha512")
-      .toString("hex");
-    return hash === hashVerify;
-  }
+ async validatePassword(password: string, hashPassword :string ):Promise<boolean> {
+  const isValid = await bcrypt.compare(password, hashPassword);
+  return isValid;
+ }
+
 }
 
 

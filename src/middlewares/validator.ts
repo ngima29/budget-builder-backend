@@ -1,30 +1,22 @@
-import { NextFunction, Request, Response } from "express";
-import { ObjectSchema } from "joi";
+import {ArraySchema, ObjectSchema } from "joi";
 
 class Validator {
-  private static instance: Validator;
+  private static instance : Validator;
+  private constructor() {};
 
-  private constructor() {}
-
-  static get(): Validator {
-    if (!Validator.instance) {
+   static get (): Validator {
+    if(!Validator){
       Validator.instance = new Validator();
     }
     return Validator.instance;
-  }
-
-  check = (input: ObjectSchema) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-      const { value, error } = input.validate(req.body, {
-        abortEarly: false,
-      });
-      if (error) next(error);
-      req.body = value;
-      next();
-    };
-  };
+   }
+   check = (schema: ObjectSchema | ArraySchema, input: object)=>{
+    const {value, error} = schema.validate(input,{
+      abortEarly: false,
+    });
+    if(error) throw error;
+   };
 }
-
 const validator = Validator.get();
 
-export { validator as Validator };
+export { validator as Validator};
