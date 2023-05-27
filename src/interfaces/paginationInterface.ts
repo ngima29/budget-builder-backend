@@ -1,10 +1,12 @@
+import { SortEnum } from '../enums';
+
 export interface PaginationExtend {
   offset?: number
   limit?: number
 }
 
 export interface OrderExtend {
-  sort?: string
+  sort?: SortEnum
   order?: string
 }
 

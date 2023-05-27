@@ -1,14 +1,11 @@
 import Joi from "joi";
 import {
-  booleanSchema,
   emailSchema,
-  phoneSchema,
-  positiveIntegerSchema,
   stringSchema,
 } from "./schemas";
 
 const signUp = Joi.object({
-  Full_Name: stringSchema.label("Full Name").required(),
+  full_name: stringSchema.label("Full Name").required(),
   email: emailSchema.label("E-mail").required(),
   password: stringSchema.label("Password").required(),
   confirm_password: stringSchema.label('Confirm Password')

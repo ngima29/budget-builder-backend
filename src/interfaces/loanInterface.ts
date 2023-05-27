@@ -1,5 +1,7 @@
 import * as Sequelize from 'sequelize';
-import {LoanStatusEnum, LoanTypeEnum} from '../enums'
+import {LoanStatusEnum, LoanTypeEnum} from '../enums';
+import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
+
 export interface InputLoanInterface {
   userId : Sequelize.CreationOptional<number>;
   amount: number;
@@ -11,7 +13,7 @@ export interface InputLoanInterface {
   status: LoanStatusEnum ; // enum (paid , unpaid(default)) 
 }
 
-export interface LoanInterface {
+export interface LoanInterface  extends ModelTimestampExtend{
   id: Sequelize.CreationOptional<number>
   userId : Sequelize.CreationOptional<number>;
   amount: number;
@@ -25,4 +27,5 @@ export interface LoanInterface {
 
 
 export interface LoanModelInterface extends Sequelize.Model<Partial <LoanInterface>, Partial<InputLoanInterface>>,
-LoanInterface {}
+LoanInterface {};
+export  interface ArgsLoanInterface extends PaginationOrderSearchExtend{};

@@ -1,4 +1,6 @@
 import * as Sequelize from 'sequelize';
+import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
+
 
 export interface InputGoalProgressInterface {
     userId: Sequelize.CreationOptional<number>;
@@ -7,7 +9,7 @@ export interface InputGoalProgressInterface {
     progressPercentage : number;
 }
 
-export interface GoalProgressInterface {
+export interface GoalProgressInterface extends ModelTimestampExtend{
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
     goalName : string;
@@ -18,3 +20,5 @@ export interface GoalProgressInterface {
 
 export interface GoalProgressModelInterface extends Sequelize.Model<Partial<GoalProgressInterface>,Partial<InputGoalProgressInterface>>,
 GoalProgressInterface {}
+
+export  interface ArgsGoalProgressInterface extends PaginationOrderSearchExtend{};

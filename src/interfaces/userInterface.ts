@@ -1,4 +1,6 @@
 import * as Sequelize from 'sequelize';
+import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
+
 
 export interface InputUserInterface {
   fullName: string;
@@ -7,7 +9,7 @@ export interface InputUserInterface {
   profilePic?: string;
 }
 
-export interface UserInterface {
+export interface UserInterface extends ModelTimestampExtend {
   id: number
   fullName: string;
   email: string;
@@ -33,4 +35,6 @@ export interface ForgetPassword{
   newPassword: string;
 }
 export interface UserModelInterface extends Sequelize.Model<Partial <UserInterface>, Partial<InputUserInterface>>,
-UserInterface {}
+UserInterface {};
+
+export  interface ArgsUserInterface extends PaginationOrderSearchExtend{};

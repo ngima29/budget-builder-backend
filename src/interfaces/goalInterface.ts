@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize';
 import {GoalCategoryEnum} from '../enums';
-
+import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 
 export interface InputGoalInterface {
     userId : Sequelize.CreationOptional<number>;
@@ -12,7 +12,7 @@ export interface InputGoalInterface {
     description?: string;
 }
 
-export interface GoalInterface  {
+export interface GoalInterface extends ModelTimestampExtend {
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
     name: string;
@@ -25,4 +25,6 @@ export interface GoalInterface  {
 
 
 export interface GoalModelInterface extends Sequelize.Model<Partial<GoalInterface >,Partial<InputGoalInterface>>,
-GoalInterface  {}
+GoalInterface  {};
+
+export  interface ArgsGoalInterface extends PaginationOrderSearchExtend{};
