@@ -5,7 +5,7 @@ class Validator {
   private constructor() {};
 
    static get (): Validator {
-    if(!Validator){
+    if(!Validator.instance){
       Validator.instance = new Validator();
     }
     return Validator.instance;

@@ -5,6 +5,7 @@ import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 export interface InputUserInterface {
   fullName: string;
   email: string;
+  gender: string;
   password: string;
   profilePic?: string;
 }
@@ -13,6 +14,7 @@ export interface UserInterface extends ModelTimestampExtend {
   id: number
   fullName: string;
   email: string;
+  gender: string;
   password: string;
   profilePic: string;
 }

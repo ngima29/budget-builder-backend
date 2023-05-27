@@ -5,16 +5,17 @@ import {
 } from "./schemas";
 
 const signUp = Joi.object({
-  full_name: stringSchema.label("Full Name").required(),
-  email: emailSchema.label("E-mail").required(),
+  fullName: stringSchema.label("Full Name").required(),
+  email: emailSchema.label("Email").required(),
+  gender: stringSchema.label("Gender").required(),
   password: stringSchema.label("Password").required(),
-  confirm_password: stringSchema.label('Confirm Password')
-  .not(Joi.ref('password')).label('Confirm Password')
-  .required(),
+  // confirm_password: stringSchema.label('Confirm Password')
+  // .not(Joi.ref('password')).label('Confirm Password')
+  // .required(),
 });
 
 const login = Joi.object({
-  email: emailSchema.label("E-mail").required().trim(),
+  email: emailSchema.label("Email").required().trim(),
   password: stringSchema.label("Password").required(),
 });
 

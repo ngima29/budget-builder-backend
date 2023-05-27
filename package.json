@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "build:watch": "tsc --watch",
-    "start:watch": "nodemon dist/server.js",
-    "start:dev": "nodemon ./src/server.ts",
+    "start:watch": "nodemon dist/index.js",
+    "start:dev": "nodemon ./src/index.ts",
     "clean": "rm -rf ./dist",
     "migrate": "ts-node node_modules/.bin/sequelize db:migrate --config=src/config/database.js"
   },
@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.7.1",
+    "@apollo/subgraph": "^2.4.6",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

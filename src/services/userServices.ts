@@ -1,15 +1,14 @@
-import Boom from 'boom'
 import * as Sequelize from 'sequelize'
-import { Op, WhereOptions } from 'sequelize'
 import {
-  Login,
   InputUserInterface,
-  UserCredentialInterface,
   UserInterface,
+  Login
 } from '../interfaces'
 
 import {UserRepository} from '../repositories'
-import { Password } from '../utils'
+import { Password, TokenGenerator } from '../utils'
+import { string } from 'joi'
+import { error } from 'console'
 
 
 export class UserService {
@@ -18,113 +17,97 @@ export class UserService {
     this.repository = new UserRepository()
   }
 
-  async create(input: InputUserInterface): Promise<any> {
-   
-    const existingUser = await this.repository.findOne({
-      where: {
-       where:{ email: input.email },
-      },
+  async create(input: InputUserInterface): Promise<UserInterface> {
+    console.log("hello service");
+    const existingUser = await this.repository.findOne({ 
+      where:{ email: input.email },
     })
+    console.log(existingUser)
 
-    if (existingUser) {
-        throw Boom.badRequest('Email is already taken')
-    }
-
-    const { hash, salt } = Password.generate(input.password)
-
-    const credentials = [
-      {
-        hash,
-        salt,
-      },
-    ] as UserCredentialInterface[]
+   if (existingUser) throw new Error(` Email  : ${input.email} already exist!`);
+  if(input.password){
+    input.password =  await Password.generate(input.password)
+  }
     const user = await this.repository.create(input)
+    return user;
   }
 
 
-  async findByPk(
-    id: number,
-    options = { exclude: ['deletedAt'] }
-  ): Promise<UserInterface> {
-    const userExists = await this.repository.findByPk(id)
+  // async findByPk(
+  //   id: number,
+  //   options = { exclude: ['deletedAt'] }
+  // ): Promise<UserInterface> {
+  //   const userExists = await this.repository.findByPk(id)
 
-    if (!userExists)
-      throw Boom.notFound('Customer does not exist.', [
-        { message: `Customer: ${id} does not exist!` },
-      ])
-    return userExists
-  }
+  //   if (!userExists)
+  //   console.log('sorry');
+  //     ])
+  //   return userExists
+  // }
 
-  async updateOne(
-    id: Sequelize.CreationOptional<number>,
-    input: InputUserInterface
-  ): Promise<UserInterface> {
-    if (id) {
-      const userExists = await this.repository.findByPk(id)
-      if (!userExists)
-        throw Boom.notFound('User does not exist.', [
-          { message: `User: ${id} does not exist!` },
-        ])
-    }
+  // async updateOne(
+  //   id: Sequelize.CreationOptional<number>,
+  //   input: InputUserInterface
+  // ): Promise<UserInterface> {
+  //   if (id) {
+  //     const userExists = await this.repository.findByPk(id)
+  //     if (!userExists)
+  //       throw Boom.notFound('User does not exist.', [
+  //         { message: `User: ${id} does not exist!` },
+  //       ])
+  //   }
 
-    if (input.email) {
-      const emailExists = await this.repository.findOne({
-        where: { email: input.email?.trim() },
-      })
-      if (emailExists && emailExists.id !== id)
-        throw Boom.notFound('Email not found.', [
-          { message: `Email: ${input.email} is already exists!` },
-        ])
-    }
+  //   if (input.email) {
+  //     const emailExists = await this.repository.findOne({
+  //       where: { email: input.email?.trim() },
+  //     })
+  //     if (emailExists && emailExists.id !== id)
+  //       throw Boom.notFound('Email not found.', [
+  //         { message: `Email: ${input.email} is already exists!` },
+  //       ])
+  //   }
 
-    await this.repository.updateOne({
-      id: id,
-      input: input,
-    })
+  //   await this.repository.updateOne({
+  //     id: id,
+  //     input: input,
+  //   })
 
-    return this.findByPk(id)
-  }
+  //   return this.findByPk(id)
+  // }
 
-  async deleteOne(id: number): Promise<boolean> {
-    const roleExists = await this.repository.findByPk(id)
-    if (!roleExists)
-      throw Boom.notFound('User does not exist!', [
-        { message: `User: ${id} does not exist!` },
-      ])
+  // async deleteOne(id: number): Promise<boolean> {
+  //   const roleExists = await this.repository.findByPk(id)
+  //   if (!roleExists)
+  //     throw Boom.notFound('User does not exist!', [
+  //       { message: `User: ${id} does not exist!` },
+  //     ])
 
-    const remove = await this.repository.deleteOne(id)
-    if (remove === 0)
-      throw Boom.notFound('User does not exist!', [
-        { message: `User: ${id} does not exist!` },
-      ])
-    return true
-  }
+  //   const remove = await this.repository.deleteOne(id)
+  //   if (remove === 0)
+  //     throw Boom.notFound('User does not exist!', [
+  //       { message: `User: ${id} does not exist!` },
+  //     ])
+  //   return true
+  // }
 
-  async login(input: Login): Promise<UserInterface> {
+  async login(input: Login): Promise<any> {
     const user = await this.repository.findOne({
-      where: {
-        where:  { email: input.email },
-      },
+        where:  { email: input.email }
       })
 
-    if (!user) {
-      throw Boom.unauthorized('Invalid Identifier or Password')
-    }
+    if (!user)   throw  new Error('Invalid Identifier or Password');
+    
 
-    // const userPassword = await this.userCredentialRepository.findOne({
-    //   where: { userId: user.id },
-    // })
+     const validatePassword = await Password.validatePassword(input.password, user.password)
 
-    // const validatePassword = Password.validate({
-    //   password: input.password,
-    //   // hash: userPassword.hash,
-    //   // salt: userPassword.salt,
-    // })
-
-    // if (!validatePassword) {
-    //   throw Boom.unauthorized('Invalid Identifier or Password')
-    // }
-
-    return user
+     if (!validatePassword)   throw new Error('Invalid Identifier or Password')
+     if (user && validatePassword){
+       const userId = user.id
+       const token = await TokenGenerator.generateToken({userId}, 86400)
+       return {
+        user,
+        token}
+     }
+   
   }
 }

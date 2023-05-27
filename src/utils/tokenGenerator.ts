@@ -17,7 +17,7 @@ class TokenGenerator {
     return TokenGenerator.instance;
   }
 
-  generateToken(payload: object, expiresIn: string): string {
+  generateToken(payload: object, expiresIn: number): string {
     if (!this.secretKey) {
       throw new Error('Secret key not found');
     }

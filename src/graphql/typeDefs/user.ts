@@ -10,24 +10,30 @@ export const userDefs: DocumentNode = gql`
    other
    }
 input InputUserSignUp {
-    full_name: String!
-    gender: Gender!
-    email: String!
-    password: String!
+    fullName: String
+    gender: Gender
+    email: String
+    password: String
 }
 
  type User {
     id: Int
-    full_name: String
+    fullName: String
     gender: Gender
     email: String
-    createdAt: Date
-    updatedAt: Date
 }
-input Login {
+input InputLogin {
     email:String!
     password:String!
 }
+type UserToken {
+        user: User
+        token: String
+    }
+type Login {
+        message: String
+        data: UserToken
+    }
 
 input ForgetPassword {
     email: String!
@@ -49,7 +55,7 @@ extend type Mutation {
  createUser(input: InputUserSignUp!): SingleUser
  updateUser(id:Int!, input: InputUserSignUp!):SingleUser
  deleteUser(id:Int!):Message
- login(input: Login): SingleUser
+ login(input: InputLogin): Login
  forgetPassword(input: ForgetPassword): Message
  changePassword(Input: ChangePassword): Message
 }
