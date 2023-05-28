@@ -13,7 +13,7 @@ const Investment = sequelize.define<InvestmentModelInterface>(
             autoIncrement: true,
             primaryKey: true,
           },
-        userId:{
+      userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
             field: 'user_id',
@@ -22,15 +22,15 @@ const Investment = sequelize.define<InvestmentModelInterface>(
               key: 'id',
             },
         },
-        name: {
+      name: {
             type: Sequelize.STRING,
             allowNull: false,
           },
-        type: {
+      type: {
             type : Sequelize.ENUM(InvestmentTypeEnum.mutual_fund,InvestmentTypeEnum.others,InvestmentTypeEnum.real_estate,InvestmentTypeEnum.share,InvestmentTypeEnum.sip),
             allowNull: false,
           },
-        description: {
+      remarks: {
             type: Sequelize.TEXT,
             allowNull: true,
           },

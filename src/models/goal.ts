@@ -44,7 +44,7 @@ const Goal = sequelize.define<GoalModelInterface>(
             type : Sequelize.NUMBER,
             allowNull: false,
           },
-        description: {
+        remarks: {
             type: Sequelize.TEXT,
             allowNull: true,
           }

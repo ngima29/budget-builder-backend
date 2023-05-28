@@ -44,7 +44,7 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
             type: Sequelize.NUMBER,
             allowNull: false,   
         },
-        description:{
+        remarks:{
             type: Sequelize.STRING,
             allowNull:true,
         },

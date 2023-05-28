@@ -14,7 +14,7 @@ const Loan = sequelize.define<LoanModelInterface>(
             autoIncrement: true,
             primaryKey: true,
           },
-        userId:{
+      userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
             field: 'user_id',
@@ -23,31 +23,31 @@ const Loan = sequelize.define<LoanModelInterface>(
               key: 'id',
             },
         },
-        amount: {
+      amount: {
             type: Sequelize.NUMBER,
             allowNull: false,
           },
-        type: {
+      type: {
             type : Sequelize.ENUM(LoanTypeEnum.given,LoanTypeEnum.received),
             allowNull: false,
           },
-        description: {
+      remarks: {
             type: Sequelize.TEXT,
             allowNull: true,
           },
-        date: {
+      date: {
             type: Sequelize.DATEONLY,
             allowNull: false,
-        },
-        returnDate: {
+          },
+      returnDate: {
             type: Sequelize.DATEONLY,
             allowNull: true,
-        },
-        interestRate: {
+          },
+      interestRate: {
             type: Sequelize.NUMBER,
             allowNull: true,
           },
-        status: {
+      status: {
             type: Sequelize.ENUM(LoanStatusEnum.paid,LoanStatusEnum.pending,LoanStatusEnum.unpaid),
             allowNull: false,
         },

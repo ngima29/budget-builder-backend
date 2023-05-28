@@ -10,16 +10,22 @@ const Category = sequelize.define<CategoryModelInterface>(
     {
         id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-        },
-        title:{
+          },
+        name: {
             type: Sequelize.STRING,
-            allowNull: false, 
-            unique: true,   
-        },
-        type:{
+            allowNull: false,
+          },
+        parentId: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+        level: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+          type:{
             type: Sequelize.ENUM(CategoryTypeEnum.expenses,CategoryTypeEnum.income,CategoryTypeEnum.others),
             allowNull:false,
         },
@@ -31,8 +37,8 @@ const Category = sequelize.define<CategoryModelInterface>(
         indexes: [
             {
                 unique: true,
-                name: 'categories_title_type',
-                fields: ['title','type'],
+                name: 'categories_name_parentId_type',
+                fields: ['name','parentId','type'],
                 where :{
                     deleted_at: null,
                 },
