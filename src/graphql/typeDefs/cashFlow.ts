@@ -1,30 +1,35 @@
 import {DocumentNode} from 'graphql';
 import gql from 'graphql-tag';
 
-export const cashFlowDefs: DocumentNode = gql`
-#graphql
-scalar Date
+export const cashFlowDefs: DocumentNode = gql`#graphql
+
  enum CashFlowType {
     income
     expenses
    }
+
+ enum SortEnum {
+        desc
+        asc
+    }
+
 input InputCashFlow {
-    categoryId:Number
-    goalId: Number
-    amount: Number
+    categoryId:Int
+    goalId: Int
+    amount: Int
     remarks: String
-    date: Date
+    date: String
     type: CashFlowType
 }
 
  type CashFlow {
     id: Int
-    userId:Number
-    categoryId:Number
-    goalId: Number
-    amount: Number
+    userId:Int
+    categoryId:Int
+    goalId: Int
+    amount: Int
     remarks: String
-    date: Date
+    date: String
     type: CashFlowType
 }
  
@@ -38,9 +43,7 @@ input InputCashFlow {
   data: [CashFlow]
  }
 
-type Message {
- message: String
-}
+
 extend type Mutation {
  createCashFlow(input: InputCashFlow!): SingleCashFlow
  updateCashFlow(id:Int!, input: InputCashFlow!):SingleCashFlow

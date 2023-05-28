@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 export const InvestmentDefs: DocumentNode = gql`
 #graphql
- scalar Date
+
 
  enum InvestmentType {
     stock 
@@ -17,9 +17,9 @@ export const InvestmentDefs: DocumentNode = gql`
 input InputInvestment {
     name: String
     type: InvestmentType
-    amount: Number
+    amount: Int
     remarks: String
-    date: Date
+    date: String
 }
 
  type Investment {
@@ -27,9 +27,9 @@ input InputInvestment {
     userId: Int
     name: String
     type: InvestmentType
-    amount: Number
+    amount: Int
     remarks: String
-    date: Date
+    date: String
 }
  
  type SingleInvestment {
@@ -42,9 +42,7 @@ input InputInvestment {
   data: [Investment]
  }
 
-type Message {
- message: String
-}
+
 
 extend type Mutation {
  createInvestment(input: InputInvestment!): SingleInvestment

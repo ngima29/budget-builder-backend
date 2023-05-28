@@ -3,19 +3,20 @@ import gql from 'graphql-tag';
 
 export const GoalProgressProgressDefs: DocumentNode = gql`
 #graphql
- scalar Date
+
  enum GoalProgressType {
     income 
     expenses 
     investment
     others
    }
+
 input InputGoalProgress {
     name: String
     type: GoalProgressType
-    startDate: Date
-    endDate: Date
-    totalAmount: Number
+    startDate: String
+    endDate: String
+    totalAmount: Int
     remarks: String
 }
 
@@ -24,9 +25,9 @@ input InputGoalProgress {
     userId: Int
     name: String
     type: GoalProgressType
-    startDate: Date
-    endDate: Date
-    totalAmount: Number
+    startDate: String
+    endDate: String
+    totalAmount: Int
     remarks: String
 }
  
@@ -35,14 +36,11 @@ input InputGoalProgress {
   data: GoalProgress
  }
 
- type PaginationGoalProgresss {
+ type PaginationGoalProgress {
   message: String
   data: [GoalProgress]
  }
 
-type Message {
- message: String
-}
 
 extend type Mutation {
  createGoalProgress(input: InputGoalProgress!): SingleGoalProgress
@@ -52,7 +50,7 @@ extend type Mutation {
 
 extend type Query {
     GoalProgress(id:Int!): SingleGoalProgress
-    GoalProgresss(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationGoalProgresss
+    GoalProgress(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationGoalProgress
 }
 
 `;

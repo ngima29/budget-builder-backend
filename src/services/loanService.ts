@@ -22,7 +22,7 @@ export class LoanService {
     })
 
     if (existingLoan) throw new Error("Loan is already Exist");
-
+    input.slug = loanSlug;
     const loan = await this.repository.create(input);
     return loan;
   }

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import sequelize from 'sequelize'
-import { EnvironmentEnum } from '../enums'
+import { EnvironmentEnum, SortEnum } from '../enums';
 
 dotenv.config()
 
@@ -53,11 +53,12 @@ export const port = parseInt(process.env.PORT!) as number,
     'http://127.0.0.1:3000',
     'http://localhost:3000',
     'http://127.0.0.1:5173',
-    'http://localhost:5173',
-    'http://188.166.246.240:3000',
-    'http://188.166.246.240:3001',
-    'https://admin.develop.mumegroup.com',
     hostUrl,
   ] as string[],
-  kongBaseUrl = process.env.KONG_BASE_URL!,
-  notificationBaseUrl = process.env.NOTIFICATION_BASE_URL as string;
+
+ /** Pagination */
+ pgMinLimit = 10,
+ pgMaxLimit = 100,
+ /** Order */
+ defaultOrder = 'updatedAt',
+ defaultSort = SortEnum.desc

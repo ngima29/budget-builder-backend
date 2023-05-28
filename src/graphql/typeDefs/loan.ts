@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 export const LoanDefs: DocumentNode = gql`
 #graphql
- scalar Date
+
 
  enum LoanType {
     received
@@ -16,24 +16,24 @@ export const LoanDefs: DocumentNode = gql`
    }
 
 input InputLoan {
-    amount: Number
+    amount: Int
     type: LoanType
     remarks: String
-    date: Date
-    returnDate: Date
-    interestRate: Number
+    date: String
+    returnDate: String
+    interestRate: Int
     status: LoanStatus
 }
 
  type Loan {
     id: Int
     userId: Int
-    amount: Number
+    amount: Int
     type: LoanType
     remarks: String
-    date: Date
-    returnDate: Date
-    interestRate: Number
+    date: String
+    returnDate: String
+    interestRate: Int
     status: LoanStatus
 }
  
@@ -47,9 +47,6 @@ input InputLoan {
   data: [Loan]
  }
 
-type Message {
- message: String
-}
 
 extend type Mutation {
  createLoan(input: InputLoan!): SingleLoan

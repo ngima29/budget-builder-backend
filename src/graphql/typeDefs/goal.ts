@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 
 export const GoalDefs: DocumentNode = gql`
 #graphql
- scalar Date
+
+
  enum GoalType {
     income 
     expenses 
@@ -13,9 +14,9 @@ export const GoalDefs: DocumentNode = gql`
 input InputGoal {
     name: String
     type: GoalType
-    startDate: Date
-    endDate: Date
-    totalAmount: Number
+    startDate: String
+    endDate: String
+    totalAmount: Int
     remarks: String
 }
 
@@ -24,9 +25,9 @@ input InputGoal {
     userId: Int
     name: String
     type: GoalType
-    startDate: Date
-    endDate: Date
-    totalAmount: Number
+    startDate: String
+    endDate: String
+    totalAmount: Int
     remarks: String
 }
  
@@ -40,9 +41,7 @@ input InputGoal {
   data: [Goal]
  }
 
-type Message {
- message: String
-}
+
 
 extend type Mutation {
  createGoal(input: InputGoal!): SingleGoal

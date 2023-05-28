@@ -1,91 +1,112 @@
 import { InformationEvent } from 'http';
-import { GraphQLError } from 'graphql';
+import { defaultOrder, defaultSort, pgMaxLimit, pgMinLimit } from '../../config';
 import {
   ContextInterface,
-  InputUserInterface,
-  InputLoginInterface
+  InputLoanInterface,
+  ArgsLoanInterface
 } from '../../interfaces';
 import { Guard, Validator } from '../../middlewares';
-import {
-    signUp,
-    updateUser,
-    login
-} from '../../validators';
+import {createLoan, updateLoan} from '../../validators';
 import {SuccessResponse} from "../../helpers"
- import {UserService} from "../../services"
+ import {LoanService} from "../../services"
 
-export const userResolvers:any = { 
+export const loanResolvers:any = { 
     Mutation: {
-    createUser: async (
-      parent: ParentNode,
-      args: { input: InputUserInterface },
-      contextValue: ContextInterface,
-      info: InformationEvent,
-    ) => {
-      Validator.check(signUp, args.input);
-      const data = await new UserService().create(args.input);
+      createLoan: async (
+        parent: ParentNode,
+        args: { input:InputLoanInterface  },
+        contextValue: ContextInterface,
+        info: InformationEvent,
+          ) => {
+      const user = Guard.grant(contextValue.user)
+      Validator.check(createLoan, args.input);
+      args.input.userId = user.id;
+      const data = await new LoanService().create(args.input);
       return SuccessResponse.send({
-        message: 'Attribute value is successfully created.',
+        message: 'Loan  is successfully created.',
         data: data,
       });
     },
 
-    login: async (
-        parent: ParentNode,
-        args: { input: InputLoginInterface },
-        contextValue: ContextInterface,
-        info: InformationEvent,
-      ) => {
-        Validator.check(login, args.input);
-        const data = await new UserService().login(args.input);
-        return SuccessResponse.send({
-          message: 'Attribute value is successfully created.',
-          data: data,
-        });
-      },
 
-    updateUser: async (
+
+    updateLoan: async (
         parent: ParentNode,
-        args: {  id: number; input: InputUserInterface },
+        args: {  id: number; input: InputLoanInterface },
         contextValue: ContextInterface,
         info: InformationEvent,
       ) => {
-        Guard.grant(contextValue.user);
-        Validator.check(updateUser, args.input);
-        const data = await new UserService().updateOne(args.id,args.input);
+       const user= Guard.grant(contextValue.user);
+        Validator.check(updateLoan, args.input);
+        args.input.userId = user.id;
+        const data = await new LoanService().updateOne(args.id,args.input);
         return SuccessResponse.send({
-          message: 'User  is successfully Updated.',
+          message: 'Loan  is successfully Updated.',
           data: data,
         });
       },
-    deleteUser: async (
+    deleteLoan: async (
         parent: ParentNode,
         args: {  id: number },
         contextValue: ContextInterface,
         info: InformationEvent,
       ) => {
         Guard.grant(contextValue.user);
-         await new UserService().deleteOne(args.id);
+         await new LoanService().deleteOne(args.id);
         return SuccessResponse.send({
-          message: 'User is successfully Deleted.'
+          message: 'Loan is successfully Deleted.'
         });
       }
 
 },
 Query: {
-    user: async (
+  loan: async (
         parent: ParentNode,
         args: {  id: number },
         contextValue: ContextInterface,
         info: InformationEvent,
       ) => {
         Guard.grant(contextValue.user);
-        const data= await new UserService().findByPk(args.id);
+        const data= await new LoanService().findByPk(args.id);
         return SuccessResponse.send({
-          message: 'User is successfully Fetched.',
+          message: 'Loan is successfully Fetched.',
           data: data
         });
-      }
+      },
+ loans: async (
+        parent: ParentNode,
+        args: ArgsLoanInterface,
+        contextValue: ContextInterface,
+        info: InformationEvent,
+      ) => {
+        Guard.grant(contextValue.user);
+        let { offset, limit, query, sort, order, type ,status} = args;
+        offset = offset && offset > 0 ? offset - 1 : 0;
+        limit = limit ? limit : pgMinLimit;
+        limit = Math.min(limit, pgMaxLimit);
+        query = query ? query : undefined;
+        order = order ? order : defaultOrder;
+        sort = sort ? sort : defaultSort;
+        type = type ? type : undefined;
+        status = status? status : undefined;
+      
+  
+        const { count, rows: data } = await new LoanService().findAndCountAll({
+          offset,
+          limit,
+          query,
+          sort,
+          order,
+          type,
+          status,
+        });
+  
+        return SuccessResponse.send({
+          message: 'Loan  list is successfully fetched.',
+          data: data,
+          count: count,
+        });
+      },
 
 }
 }

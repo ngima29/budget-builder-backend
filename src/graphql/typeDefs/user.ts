@@ -9,6 +9,12 @@ export const userDefs: DocumentNode = gql`
    female
    other
    }
+
+   enum SortEnum {
+        desc
+        asc
+    }
+
 input InputUserSignUp {
     fullName: String
     gender: Gender
@@ -51,6 +57,7 @@ input ForgetPassword {
 type Message {
  message: String
 }
+
 extend type Mutation {
  createUser(input: InputUserSignUp!): SingleUser
  updateUser(id:Int!, input: InputUserSignUp!):SingleUser

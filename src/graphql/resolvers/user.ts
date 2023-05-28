@@ -1,5 +1,4 @@
 import { InformationEvent } from 'http';
-import { GraphQLError } from 'graphql';
 import {
   ContextInterface,
   InputUserInterface,

@@ -22,6 +22,7 @@ export class InvestmentService {
        where:{ slug: investmentSlug, type:input.type}
     })
     if (existingInvestment)  throw new Error(`Investment name already Exist`);
+    input.slug = investmentSlug;
     const investment = await this.repository.create(input);
     return investment;
   }

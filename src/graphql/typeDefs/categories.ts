@@ -9,6 +9,7 @@ export const CategoryDefs: DocumentNode = gql`
     expenses 
     others
    }
+
 input InputCategory {
     name: String
     type: CategoryType
@@ -17,8 +18,8 @@ input InputCategory {
  type Category {
     id: Int
     name: String
-    parentId: Number
-    level:Number
+    parentId: Int
+    level:Int
     type: CategoryType
 }
  
@@ -32,9 +33,7 @@ input InputCategory {
   data: [Category]
  }
 
-type Message {
- message: String
-}
+
 extend type Mutation {
  createCategory(input: InputCategory!): SingleCategory
  updateCategory(id:Int!, input: InputCategory!):SingleCategory
