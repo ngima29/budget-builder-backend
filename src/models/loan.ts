@@ -48,10 +48,12 @@ const Loan = sequelize.define<LoanModelInterface>(
       returnDate: {
             type: Sequelize.DATEONLY,
             allowNull: true,
+            field: 'return_date',
           },
       interestRate: {
             type: Sequelize.NUMBER,
             allowNull: true,
+            field: 'interest_rate',
           },
       status: {
             type: Sequelize.ENUM(LoanStatusEnum.paid,LoanStatusEnum.pending,LoanStatusEnum.unpaid),

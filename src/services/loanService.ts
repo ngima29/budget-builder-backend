@@ -18,7 +18,7 @@ export class LoanService {
   async create(input: InputLoanInterface): Promise<LoanInterface> {
     const loanSlug = slug(input.remarks);
     const existingLoan= await this.repository.findOne({
-       where:{ slug: loanSlug,type:input.type },
+       where:{ slug: loanSlug,type:input.type , amount:input.amount},
     })
 
     if (existingLoan) throw new Error("Loan is already Exist");
@@ -41,10 +41,17 @@ export class LoanService {
     id: Sequelize.CreationOptional<number>,
     input: InputLoanInterface
   ): Promise<LoanInterface> {
-    if (id) {
       const loanExists = await this.repository.findByPk(id)
        if (!loanExists) throw new Error(`Loan: ${id} does not exist!`)
-    }
+
+       if(input.remarks){
+        const loanRemarksSlug = slug(input.remarks.toString());
+        const existingLoanSlug = await this.repository.findOne({
+          where:{ slug:loanRemarksSlug },
+        })
+        if(existingLoanSlug) throw new Error(`Investment Name: ${input.remarks} is already exist`);
+        input.slug = loanRemarksSlug;
+      }
     await this.repository.updateOne({
       id: id,
       input: input,
@@ -65,7 +72,9 @@ export class LoanService {
     count: number;
     rows: LoanInterface[];
   }> {
-    let where: WhereOptions<any> = {};
+    let where: WhereOptions<any> = {
+      // deleted_at: null,
+    };
     if (query) {
       where = {
         ...where,

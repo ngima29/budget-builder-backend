@@ -18,6 +18,8 @@ export class InvestmentService {
 
   async create(input: InputInvestmentInterface): Promise<InvestmentInterface> {
     const investmentSlug = slug(input.name);
+    console.log("srervice");
+    console.log(input)
     const existingInvestment = await this.repository.findOne({
        where:{ slug: investmentSlug, type:input.type}
     })
@@ -43,10 +45,16 @@ export class InvestmentService {
     id: Sequelize.CreationOptional<number>,
     input: InputInvestmentInterface
   ): Promise<InvestmentInterface> {
-    if (id) {
       const investmentExists = await this.repository.findByPk(id)
       if (!investmentExists)  throw new Error(`Investment ${id} does not exist`);
-    }
+      if(input.name){
+        const investmentSlug = slug(input.name.toString());
+        const existingInvestment = await this.repository.findOne({
+          where:{ slug:investmentSlug },
+        })
+        if(existingInvestment) throw new Error(`Investment Name: ${input.name} is already exist`);
+        input.slug = investmentSlug;
+      }
     await this.repository.updateOne({
       id: id,
       input: input,

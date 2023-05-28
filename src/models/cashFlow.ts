@@ -2,6 +2,8 @@ import * as Sequelize from "sequelize";
 import { CashFlowModelInterface} from '../interfaces';
 import { Database } from "./instance";
 import {CashFlowTypeEnum} from "../enums"
+
+//import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 const sequelize = Database.sequelize;
 
 const CashFlow = sequelize.define<CashFlowModelInterface>(
