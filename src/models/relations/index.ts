@@ -71,22 +71,22 @@ CashFlow.belongsTo(Category, {
   foreignKey: 'categoryId',
 })
 
-// /* Category and Goal relation */
-// Category.hasMany(Goal, {
-//   foreignKey: 'categoryId',
-//   as: 'category_goal',
-// })
+/* Category and Goal relation */
+Category.hasMany(Goal, {
+  foreignKey: 'categoryId',
+  as: 'category_goal',
+})
 
-// Goal.belongsTo(Category, {
-//   foreignKey: 'categoryId',
-// })
+Goal.belongsTo(Category, {
+  foreignKey: 'categoryId',
+})
 
-// /* Party and Transaction relation */
-// Party.hasMany(Transaction, {
-//   foreignKey: 'transactionId',
-//   as: 'transaction_party',
-// })
+/* Goal and GoalProgress relation */
+Goal.hasOne(GoalProgress, {
+  foreignKey: 'goalId',
+  as: 'goal_goalProgress',
+})
 
-// Transaction.belongsTo(Party, {
-//   foreignKey: 'transactionId',
-// })
+GoalProgress.belongsTo(Goal, {
+  foreignKey: 'goalId',
+})
