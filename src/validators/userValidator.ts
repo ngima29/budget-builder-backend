@@ -9,9 +9,13 @@ const signUp = Joi.object({
   email: emailSchema.label("Email").required(),
   gender: stringSchema.label("Gender").required(),
   password: stringSchema.label("Password").required(),
-  // confirm_password: stringSchema.label('Confirm Password')
-  // .not(Joi.ref('password')).label('Confirm Password')
-  // .required(),
+});
+
+const updateUser = Joi.object({
+  fullName: stringSchema.label("Full Name"),
+  email: emailSchema.label("Email"),
+  gender: stringSchema.label("Gender"),
+  password: stringSchema.label("Password"),
 });
 
 const login = Joi.object({
@@ -50,6 +54,7 @@ const forgotPassword = Joi.object({
 
 export {
   signUp,
+  updateUser,
   resendConfirmationCode,
   confirmForgotPassword,
   forgotPassword,

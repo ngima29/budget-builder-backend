@@ -1,65 +1,75 @@
-// import { Category, Finance, Goal,Notification,Party,Transaction,User } from '../'
+ import { CashFlow,Category,Goal,GoalProgress,Investment,Loan,User } from '../'
 
-// /* User and party relation */
-// User.hasMany(Party, {
-//   foreignKey: 'userId',
-//   as: 'user_party',
-// })
+/* User and CashFlow relation */
+User.hasMany(CashFlow, {
+  foreignKey: 'userId',
+  as: 'user_cashFlow',
+})
 
-// Party.belongsTo(User, {
-//   foreignKey: 'userId',
-// })
+CashFlow.belongsTo(User, {
+  foreignKey: 'userId',
+})
 
-// /* User and finance relation */
-// User.hasMany(Finance, {
-//   foreignKey: 'userId',
-//   as: 'user_finance',
-// })
+// /* User and Category relation */
+User.hasMany(Category, {
+  foreignKey: 'userId',
+  as: 'user_category',
+})
 
-// Finance.belongsTo(User, {
-//   foreignKey: 'userId',
-// })
+Category.belongsTo(User, {
+  foreignKey: 'userId',
+})
 
-// /* User and Transaction relation */
-// User.hasMany(Transaction, {
-//   foreignKey: 'userId',
-//   as: 'user_transaction',
-// })
+/* User and Goal relation */
+User.hasMany(Goal, {
+  foreignKey: 'userId',
+  as: 'user_goal',
+})
 
-// Transaction.belongsTo(User, {
-//   foreignKey: 'userId',
-// })
+Goal.belongsTo(User, {
+  foreignKey: 'userId',
+})
 
-// /* User and Goal relation */
-// User.hasMany(Goal, {
-//   foreignKey: 'userId',
-//   as: 'user_goal',
-// })
+/* User and GoalProgress relation */
+User.hasMany(GoalProgress, {
+  foreignKey: 'userId',
+  as: 'user_goalProgress',
+})
 
-// Goal.belongsTo(User, {
-//   foreignKey: 'userId',
-// })
+GoalProgress.belongsTo(User, {
+  foreignKey: 'userId',
+})
 
-// /* User and Notification relation */
-// User.hasMany(Notification, {
-//   foreignKey: 'userId',
-//   as: 'user_Notification',
-// })
+/* User and Investment relation */
+User.hasMany(Investment, {
+  foreignKey: 'userId',
+  as: 'user_investment',
+})
 
-// Notification.belongsTo(User, {
-//   foreignKey: 'userId',
-// })
+Investment.belongsTo(User, {
+  foreignKey: 'userId',
+})
 
 
-// /* Category and Finance relation */
-// Category.hasMany(Finance, {
-//   foreignKey: 'categoryId',
-//   as: 'category_finance',
-// })
+/* User and Loan relation */
+User.hasMany(Loan, {
+    foreignKey: 'userId',
+    as: 'user_loan',
+  })
+  
+  Loan.belongsTo(User, {
+    foreignKey: 'userId',
+  })
 
-// Finance.belongsTo(Category, {
-//   foreignKey: 'categoryId',
-// })
+/* Category and CashFlow relation */
+Category.hasMany(CashFlow, {
+  foreignKey: 'categoryId',
+  as: 'category_cashFlow',
+})
+
+CashFlow.belongsTo(Category, {
+  foreignKey: 'categoryId',
+})
 
 // /* Category and Goal relation */
 // Category.hasMany(Goal, {

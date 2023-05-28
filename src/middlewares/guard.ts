@@ -1,5 +1,6 @@
 import {  UserInterface } from '../interfaces';
 import { TokenGenerator} from '../utils'
+import {UserService} from '../services'
 class Guard {
   private static instance: Guard;
 
@@ -12,13 +13,14 @@ class Guard {
     return Guard.instance;
   }
   auth = async (token: string): Promise<UserInterface> => {
-    const verify = await TokenGenerator.verifyToken(token);
-   
-    if (!verify) {
+    const {userId} = await TokenGenerator.verifyToken(token);
+    const userExists = await new UserService().findOne({
+      id:userId
+    });
+    if (!userExists) {
       throw Error('Auth Failed');
     }
-
-    return verify;
+    return userExists;
   };
   grant = (user: UserInterface | undefined): UserInterface => {
     if (!user) throw Error('Auth Failed');

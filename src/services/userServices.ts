@@ -1,8 +1,9 @@
-import * as Sequelize from 'sequelize'
+import * as Sequelize from 'sequelize';
+import { WhereOptions } from 'sequelize';
 import {
   InputUserInterface,
   UserInterface,
-  Login
+  InputLoginInterface
 } from '../interfaces'
 
 import {UserRepository} from '../repositories'
@@ -18,12 +19,9 @@ export class UserService {
   }
 
   async create(input: InputUserInterface): Promise<UserInterface> {
-    console.log("hello service");
     const existingUser = await this.repository.findOne({ 
       where:{ email: input.email },
     })
-    console.log(existingUser)
-
    if (existingUser) throw new Error(` Email  : ${input.email} already exist!`);
   if(input.password){
     input.password =  await Password.generate(input.password)
@@ -33,73 +31,58 @@ export class UserService {
   }
 
 
-  // async findByPk(
-  //   id: number,
-  //   options = { exclude: ['deletedAt'] }
-  // ): Promise<UserInterface> {
-  //   const userExists = await this.repository.findByPk(id)
+  async findByPk(
+    id: number,
+    options = { exclude: ['deletedAt'] }
+  ): Promise<UserInterface> {
+    const userExists = await this.repository.findByPk(id)
 
-  //   if (!userExists)
-  //   console.log('sorry');
-  //     ])
-  //   return userExists
-  // }
+    if (!userExists) throw new Error(`User ${id}  does not exit `);
+    return userExists
+  }
 
-  // async updateOne(
-  //   id: Sequelize.CreationOptional<number>,
-  //   input: InputUserInterface
-  // ): Promise<UserInterface> {
-  //   if (id) {
-  //     const userExists = await this.repository.findByPk(id)
-  //     if (!userExists)
-  //       throw Boom.notFound('User does not exist.', [
-  //         { message: `User: ${id} does not exist!` },
-  //       ])
-  //   }
+  async updateOne(
+    id: Sequelize.CreationOptional<number>,
+    input: InputUserInterface
+  ): Promise<UserInterface> {
+    if (id) {
+      const userExists = await this.repository.findByPk(id)
+      if (!userExists) throw new Error(`User ${id}  does not exit `);
+    }
 
-  //   if (input.email) {
-  //     const emailExists = await this.repository.findOne({
-  //       where: { email: input.email?.trim() },
-  //     })
-  //     if (emailExists && emailExists.id !== id)
-  //       throw Boom.notFound('Email not found.', [
-  //         { message: `Email: ${input.email} is already exists!` },
-  //       ])
-  //   }
+    if (input.email) {
+      const emailExists = await this.repository.findOne({
+        where: { email: input.email?.trim() },
+      })
+      if (emailExists && emailExists.id !== id)
+        throw  new Error(`Email: ${input.email} is already exists!`)
+    }
 
-  //   await this.repository.updateOne({
-  //     id: id,
-  //     input: input,
-  //   })
+    await this.repository.updateOne({
+      id: id,
+      input: input,
+    })
 
-  //   return this.findByPk(id)
-  // }
+    return this.findByPk(id)
+  }
 
-  // async deleteOne(id: number): Promise<boolean> {
-  //   const roleExists = await this.repository.findByPk(id)
-  //   if (!roleExists)
-  //     throw Boom.notFound('User does not exist!', [
-  //       { message: `User: ${id} does not exist!` },
-  //     ])
 
-  //   const remove = await this.repository.deleteOne(id)
-  //   if (remove === 0)
-  //     throw Boom.notFound('User does not exist!', [
-  //       { message: `User: ${id} does not exist!` },
-  //     ])
-  //   return true
-  // }
+async deleteOne(id: number): Promise<boolean> {
+  const userExists = await this.repository.findByPk(id);
+  if (!userExists) throw new Error(`User: ${id} does not exist`);
 
-  async login(input: Login): Promise<any> {
+  const remove = await this.repository.deleteOne(id);
+  if (remove === 0) throw new Error(`User: ${id} does not exist`);
+  return true;
+}
+
+  async login(input: InputLoginInterface): Promise<any> {
     const user = await this.repository.findOne({
         where:  { email: input.email }
       })
 
     if (!user)   throw  new Error('Invalid Identifier or Password');
-    
-
      const validatePassword = await Password.validatePassword(input.password, user.password)
-
      if (!validatePassword)   throw new Error('Invalid Identifier or Password')
      if (user && validatePassword){
        const userId = user.id
@@ -110,4 +93,22 @@ export class UserService {
      }
    
   }
+
+  findOne({
+    email,
+    id
+  }: {
+    email?: string;
+    id?: number | undefined;
+  }): Promise<UserInterface> {
+    let where: WhereOptions<any> = {};
+    if (email) {
+      where = { ...where, email: email };
+    }
+    if (id) {
+      where = { id: id };
+    }
+    return this.repository.findOne({ where });
+  }
+
 }

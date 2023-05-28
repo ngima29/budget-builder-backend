@@ -6,7 +6,8 @@ export interface InputInvestmentInterface {
     userId: Sequelize.CreationOptional<number>;
     name: string;
     type: InvestmentTypeEnum; // enum (share, mutualFunds, sip, real_eState, others, )
-    description?: string;
+    amount: number;
+    remarks?: string;
     date :string;
 }
 
@@ -15,7 +16,8 @@ export interface InvestmentInterface extends ModelTimestampExtend  {
     userId: Sequelize.CreationOptional<number>;
     name: string;
     type: InvestmentTypeEnum;
-    description: string;
+    amount: number;
+    remarks: string;
     date :string;
 }
 

@@ -9,7 +9,7 @@ export interface InputGoalInterface {
     startDate: string;
     endDate: string;
     totalAmount: number;
-    description?: string;
+    remarks?: string;
 }
 
 export interface GoalInterface extends ModelTimestampExtend {
@@ -20,7 +20,7 @@ export interface GoalInterface extends ModelTimestampExtend {
     startDate: string;
     endDate: string;
     totalAmount: number;
-    description: string;
+    remarks: string;
 }
 
 

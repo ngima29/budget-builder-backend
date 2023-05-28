@@ -1,11 +1,14 @@
 import { InformationEvent } from 'http';
+import { GraphQLError } from 'graphql';
 import {
   ContextInterface,
   InputUserInterface,
+  InputLoginInterface
 } from '../../interfaces';
 import { Guard, Validator } from '../../middlewares';
 import {
     signUp,
+    updateUser,
     login
 } from '../../validators';
 import {SuccessResponse} from "../../helpers"
@@ -19,33 +22,70 @@ export const userResolvers:any = {
       contextValue: ContextInterface,
       info: InformationEvent,
     ) => {
-        console.log("hello resolver");
-        console.log(args.input)
       Validator.check(signUp, args.input);
-      console.log("ok validate resolver");
       const data = await new UserService().create(args.input);
-
       return SuccessResponse.send({
         message: 'Attribute value is successfully created.',
         data: data,
       });
     },
+
     login: async (
         parent: ParentNode,
-        args: { input: InputUserInterface },
+        args: { input: InputLoginInterface },
         contextValue: ContextInterface,
         info: InformationEvent,
       ) => {
-          console.log(args.input)
         Validator.check(login, args.input);
-        console.log("ok validate resolver");
         const data = await new UserService().login(args.input);
-  
         return SuccessResponse.send({
           message: 'Attribute value is successfully created.',
           data: data,
         });
+      },
+
+    updateUser: async (
+        parent: ParentNode,
+        args: {  id: number; input: InputUserInterface },
+        contextValue: ContextInterface,
+        info: InformationEvent,
+      ) => {
+        Guard.grant(contextValue.user);
+        Validator.check(updateUser, args.input);
+        const data = await new UserService().updateOne(args.id,args.input);
+        return SuccessResponse.send({
+          message: 'User  is successfully Updated.',
+          data: data,
+        });
+      },
+    deleteUser: async (
+        parent: ParentNode,
+        args: {  id: number },
+        contextValue: ContextInterface,
+        info: InformationEvent,
+      ) => {
+        Guard.grant(contextValue.user);
+         await new UserService().deleteOne(args.id);
+        return SuccessResponse.send({
+          message: 'User is successfully Deleted.'
+        });
       }
+
 },
-Query: {}
+Query: {
+    user: async (
+        parent: ParentNode,
+        args: {  id: number },
+        contextValue: ContextInterface,
+        info: InformationEvent,
+      ) => {
+        Guard.grant(contextValue.user);
+        const data= await new UserService().findByPk(args.id);
+        return SuccessResponse.send({
+          message: 'User is successfully Fetched.',
+          data: data
+        });
+      }
+
+}
 }

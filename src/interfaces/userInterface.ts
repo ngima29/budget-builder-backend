@@ -19,7 +19,7 @@ export interface UserInterface extends ModelTimestampExtend {
   profilePic: string;
 }
 
-export interface Login{
+export interface InputLoginInterface{
   email: string;
   password: string;
 }
