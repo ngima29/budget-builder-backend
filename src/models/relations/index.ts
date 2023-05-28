@@ -90,3 +90,12 @@ Goal.hasOne(GoalProgress, {
 GoalProgress.belongsTo(Goal, {
   foreignKey: 'goalId',
 })
+
+//  Goal and CashFlow  relation
+Goal.hasOne(CashFlow, {
+  foreignKey: 'goalId',
+  as: 'goal_cashFlow',
+})
+CashFlow.belongsTo(Goal, { 
+  foreignKey: 'goalId', 
+});

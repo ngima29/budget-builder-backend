@@ -38,12 +38,11 @@ const Category = sequelize.define<CategoryModelInterface>(
     },{
         timestamps :true,
         paranoid: true,
-        underscored:true,
         indexes: [
             {
                 unique: true,
-                name: 'categories_name_parentId_type',
-                fields: ['name','parentId','type'],
+                name: 'categories_slug_parent_id_type',
+                fields: ['slug','parentId','type'],
                 where :{
                     deleted_at: null,
                 },

@@ -16,7 +16,7 @@ export interface CashFlowInterface extends ModelTimestampExtend{
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
     categoryId: Sequelize.CreationOptional<number>;
-    goalId? : Sequelize.CreationOptional<number>;
+    goalId : Sequelize.CreationOptional<number>;
     amount: number;
     remarks: string;
     date: string;

@@ -17,7 +17,6 @@ const Loan = sequelize.define<LoanModelInterface>(
       userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
-            field: 'user_id',
             references: {
               model: 'users',
               key: 'id',
@@ -33,7 +32,7 @@ const Loan = sequelize.define<LoanModelInterface>(
           },
       remarks: {
             type: Sequelize.TEXT,
-            allowNull: true,
+            allowNull: false,
           },
       
       slug: {
@@ -48,12 +47,10 @@ const Loan = sequelize.define<LoanModelInterface>(
       returnDate: {
             type: Sequelize.DATEONLY,
             allowNull: true,
-            field: 'return_date',
           },
       interestRate: {
             type: Sequelize.NUMBER,
             allowNull: true,
-            field: 'interest_rate',
           },
       status: {
             type: Sequelize.ENUM(LoanStatusEnum.paid,LoanStatusEnum.pending,LoanStatusEnum.unpaid),
@@ -63,7 +60,16 @@ const Loan = sequelize.define<LoanModelInterface>(
     },{
         timestamps: true,
         paranoid: true,
-        underscored: true,
+        indexes: [
+          {
+              unique: true,
+              name: 'loans_slug_type_status',
+              fields: ['slug','type','status'],
+              where :{
+                  deleted_at: null,
+              },
+          },
+      ],
     },
 );
 

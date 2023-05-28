@@ -37,8 +37,8 @@ const confirmForgotPassword = Joi.object({
 });
 
 const changePassword = Joi.object({
-  old_password: stringSchema.label('Old Password').required(),
-  new_password: stringSchema.label('New Password')
+  oldPassword: stringSchema.label('Old Password').required(),
+  newPassword: stringSchema.label('New Password')
     .not(Joi.ref('old_password')).label('New Password')
     .required(),
 });

@@ -1,9 +1,8 @@
 import * as Sequelize from "sequelize";
 import { CashFlowModelInterface} from '../interfaces';
 import { Database } from "./instance";
-import {CashFlowTypeEnum} from "../enums"
+import {CashFlowTypeEnum} from "../enums";
 
-//import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 const sequelize = Database.sequelize;
 
 const CashFlow = sequelize.define<CashFlowModelInterface>(
@@ -18,7 +17,6 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
         userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
-            field: 'user_id',
             references: {
               model: 'users',
               key: 'id',
@@ -26,8 +24,6 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
         },
         categoryId:{
             type: Sequelize.INTEGER,
-            allowNull: false,
-            field: 'category_id',
             references: {
               model: 'categories',
               key: 'id',
@@ -36,7 +32,6 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
         goalId:{
             type: Sequelize.INTEGER,
             allowNull:true,
-            field: 'goal_id',
             references: {
               model: 'goals',
               key: 'id',
@@ -63,7 +58,6 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
     },{
         timestamps :true,
         paranoid: true,
-        underscored: true,
     },
 );
 

@@ -7,8 +7,8 @@ const createLoan = Joi.object({
   amount: positiveIntegerSchema.label("Amount").required(),
   type: stringSchema.label("Types").valid(...list(LoanTypeEnum)).required(),
   remarks : stringSchema.label("Description ").required(),
-  // date: dateSchema.label('Date').required(),
-  // returnDate: dateSchema.label('Return Date').required(),
+  date: dateSchema.label('Date').required(),
+  returnDate: dateSchema.label('Return Date').required(),
   interestRate: positiveIntegerSchema.label("Interest Rate").allow(null),
   status:  stringSchema.label('Status').valid(...list(LoanStatusEnum)).required(),
 });

@@ -4,15 +4,14 @@ import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 
 export interface InputGoalProgressInterface {
     userId: Sequelize.CreationOptional<number>;
-    goalName: string; // front end ma dropdown ma  line input
+    goalId: Sequelize.CreationOptional<number>; // front end ma dropdown ma  line input
     currentAmount: number; // targetAmount and  endDate and remaining days front end dekhaune
-    progressPercentage : number;
 }
 
 export interface GoalProgressInterface extends ModelTimestampExtend{
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
-    goalName : string;
+    goalId : Sequelize.CreationOptional<number>;
     endDate: string;
     currentAmount: number;
     progressPercentage : number;

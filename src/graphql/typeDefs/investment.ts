@@ -8,8 +8,8 @@ export const InvestmentDefs: DocumentNode = gql`
  enum InvestmentType {
     stock 
     commodity
-    mutual_fund 
-    real_estate 
+    mutualFund 
+    realEstate 
     sip 
     bond
     others 

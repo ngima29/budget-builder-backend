@@ -16,7 +16,6 @@ const Investment = sequelize.define<InvestmentModelInterface>(
       userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
-            field: 'user_id',
             references: {
               model: 'users',
               key: 'id',
@@ -32,14 +31,18 @@ const Investment = sequelize.define<InvestmentModelInterface>(
             unique: true,
           },
       type: {
-            type : Sequelize.ENUM(InvestmentTypeEnum.bond,InvestmentTypeEnum.commodity,InvestmentTypeEnum.mutual_fund,InvestmentTypeEnum.others,InvestmentTypeEnum.real_estate,InvestmentTypeEnum.sip,InvestmentTypeEnum.stock),
+            type : Sequelize.ENUM(InvestmentTypeEnum.bond,InvestmentTypeEnum.commodity,InvestmentTypeEnum.mutualFund,InvestmentTypeEnum.others,InvestmentTypeEnum.realEstate,InvestmentTypeEnum.sip,InvestmentTypeEnum.stock),
             allowNull: false,
           },
+      amount:{
+        type: Sequelize.NUMBER,
+        allowNull: false,
+      },
       remarks: {
             type: Sequelize.TEXT,
             allowNull: true,
           },
-        date: {
+      date: {
             type: Sequelize.DATEONLY,
             allowNull: false,
         },
@@ -47,7 +50,16 @@ const Investment = sequelize.define<InvestmentModelInterface>(
     },{
         timestamps: true,
         paranoid: true,
-        underscored: true,
+        indexes: [
+          {
+              unique: true,
+              name: 'investments_slug_type',
+              fields: ['slug','type'],
+              where :{
+                  deleted_at: null,
+              },
+          },
+      ],
     },
 );
 

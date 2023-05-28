@@ -29,16 +29,10 @@ const User = sequelize.define<UserModelInterface>(
       allowNull: false,
       unique: true,
     },
-    profilePic: {
-      type: Sequelize.TEXT,
-      allowNull:true,
-    },
-
   },
   {
     timestamps: true,
     paranoid: true,
-    underscored:true,
     indexes: [
       {
         unique: true,

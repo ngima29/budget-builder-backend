@@ -4,12 +4,10 @@ import {
   InputUserInterface,
   UserInterface,
   InputLoginInterface
-} from '../interfaces'
+} from '../interfaces';
 
-import {UserRepository} from '../repositories'
-import { Password, TokenGenerator } from '../utils'
-import { string } from 'joi'
-import { error } from 'console'
+import {UserRepository} from '../repositories';
+import { Password, TokenGenerator } from '../utils';
 
 
 export class UserService {

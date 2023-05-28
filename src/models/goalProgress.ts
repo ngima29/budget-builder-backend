@@ -13,17 +13,16 @@ const GoalProgress = sequelize.define<GoalProgressModelInterface>(
             autoIncrement: true,
             primaryKey: true,
           },
-        userId:{
+      userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
-            field: 'user_id',
             references: {
               model: 'users',
               key: 'id',
             },
         },
-        goalName: {
-            type: Sequelize.STRING,
+      goalId: {
+            type: Sequelize.INTEGER,
             allowNull: false,
             references: {
                 model: 'goals',
@@ -35,30 +34,13 @@ const GoalProgress = sequelize.define<GoalProgressModelInterface>(
             allowNull:false,
           },
 
-        // totalAmount: {
-        //     type : Sequelize.NUMBER,
-        //     allowNull: false,
-        //   },
-        // description: {
-        //     type: Sequelize.TEXT,
-        //     allowNull: true,
-        //   }
-
+        currentAmount: {
+            type : Sequelize.NUMBER,
+            allowNull: false,
+          },
     },{
         timestamps: true,
         paranoid: true,
-        underscored:true,
-        indexes: [
-            {
-                unique: true,
-                name: 'goals_name_type_endDate',
-                fields: ['name','type','endDate'],
-                where: {
-                    deleted_at : null,
-                },
-            },
-        ],
-
     },
 );
 

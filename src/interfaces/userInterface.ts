@@ -7,7 +7,6 @@ export interface InputUserInterface {
   email: string;
   gender: string;
   password: string;
-  profilePic?: string;
 }
 
 export interface UserInterface extends ModelTimestampExtend {
@@ -16,7 +15,6 @@ export interface UserInterface extends ModelTimestampExtend {
   email: string;
   gender: string;
   password: string;
-  profilePic: string;
 }
 
 export interface InputLoginInterface{

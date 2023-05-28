@@ -18,8 +18,6 @@ export class InvestmentService {
 
   async create(input: InputInvestmentInterface): Promise<InvestmentInterface> {
     const investmentSlug = slug(input.name);
-    console.log("srervice");
-    console.log(input)
     const existingInvestment = await this.repository.findOne({
        where:{ slug: investmentSlug, type:input.type}
     })

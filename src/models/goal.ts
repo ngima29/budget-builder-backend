@@ -17,7 +17,6 @@ const Goal = sequelize.define<GoalModelInterface>(
         userId:{
             type: Sequelize.INTEGER,
             allowNull: false,
-            field: 'user_id',
             references: {
               model: 'users',
               key: 'id',
@@ -57,12 +56,11 @@ const Goal = sequelize.define<GoalModelInterface>(
     },{
         timestamps: true,
         paranoid: true,
-        underscored:true,
         indexes: [
             {
                 unique: true,
-                name: 'goals_name_type_endDate',
-                fields: ['name','type','endDate'],
+                name: 'goals_slug_type_start_date_end_date',
+                fields: ['slug','type','startDate','endDate'],
                 where: {
                     deleted_at : null,
                 },
