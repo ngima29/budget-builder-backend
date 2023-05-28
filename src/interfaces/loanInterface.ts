@@ -6,7 +6,8 @@ export interface InputLoanInterface {
   userId : Sequelize.CreationOptional<number>;
   amount: number;
   type: LoanTypeEnum; // enum (Received Loans, Given Loans) or (Borrowings , Lendings)
-  remarks?: string;
+  remarks: string;
+  slug?: string;
   date: string;
   returnDate: string;
   interestRate?: number;
@@ -19,6 +20,7 @@ export interface LoanInterface  extends ModelTimestampExtend{
   amount: number;
   type: LoanTypeEnum; // enum (Received Loans, Given Loans) or (Borrowings , Lendings)
   remarks: string;
+  slug: string;
   date: string;
   returnDate: string;
   interestRate: number;
@@ -28,4 +30,7 @@ export interface LoanInterface  extends ModelTimestampExtend{
 
 export interface LoanModelInterface extends Sequelize.Model<Partial <LoanInterface>, Partial<InputLoanInterface>>,
 LoanInterface {};
-export  interface ArgsLoanInterface extends PaginationOrderSearchExtend{};
+export  interface ArgsLoanInterface extends PaginationOrderSearchExtend{
+  status?: LoanStatusEnum;
+  type?: LoanTypeEnum;
+};

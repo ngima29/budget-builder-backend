@@ -17,6 +17,11 @@ const Category = sequelize.define<CategoryModelInterface>(
             type: Sequelize.STRING,
             allowNull: false,
           },
+        slug: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
+          },
         parentId: {
             type: Sequelize.INTEGER,
             allowNull: false,

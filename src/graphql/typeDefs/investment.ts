@@ -54,7 +54,7 @@ extend type Mutation {
 
 extend type Query {
     investment(id:Int!): SingleInvestment
-    investments(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationInvestments
+    investments(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: InvestmentType): PaginationInvestments
 }
 
 `;

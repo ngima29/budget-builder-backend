@@ -5,6 +5,7 @@ import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 export interface InputGoalInterface {
     userId : Sequelize.CreationOptional<number>;
     name: string;
+    slug?: string;
     type: GoalCategoryEnum;// investment income expenses others
     startDate: string;
     endDate: string;
@@ -16,6 +17,7 @@ export interface GoalInterface extends ModelTimestampExtend {
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
     name: string;
+    slug: string;
     type: GoalCategoryEnum;// investment income expenses
     startDate: string;
     endDate: string;

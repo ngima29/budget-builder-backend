@@ -26,6 +26,11 @@ const Investment = sequelize.define<InvestmentModelInterface>(
             type: Sequelize.STRING,
             allowNull: false,
           },
+      slug: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
+          },
       type: {
             type : Sequelize.ENUM(InvestmentTypeEnum.bond,InvestmentTypeEnum.commodity,InvestmentTypeEnum.mutual_fund,InvestmentTypeEnum.others,InvestmentTypeEnum.real_estate,InvestmentTypeEnum.sip,InvestmentTypeEnum.stock),
             allowNull: false,

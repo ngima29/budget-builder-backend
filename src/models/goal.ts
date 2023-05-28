@@ -27,6 +27,11 @@ const Goal = sequelize.define<GoalModelInterface>(
             type: Sequelize.STRING,
             allowNull: false,
           },
+        slug: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true,
+          },
         type:{
             type: Sequelize.ENUM(GoalCategoryEnum.expenses,GoalCategoryEnum.income,GoalCategoryEnum.investment,GoalCategoryEnum.others),
             allowNull: false,

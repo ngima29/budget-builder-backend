@@ -1,86 +1,93 @@
-// import Boom from 'boom'
-// import * as Sequelize from 'sequelize'
-// import { Op, WhereOptions } from 'sequelize'
-// import {
-//     LoanInterface,
-//    InputLoanInterface
-// } from '../interfaces'
+import * as Sequelize from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
+import slug from 'slug';
+import {
+   LoanInterface,
+   InputLoanInterface,
+   ArgsLoanInterface
+} from '../interfaces'
+import { SequlizeQueryGenerator } from '../helpers';
+import {LoanRepository} from '../repositories'
 
-// import {LoanRepository} from '../repositories'
+export class LoanService {
+  private repository: LoanRepository
+  constructor() {
+    this.repository = new LoanRepository()
+  }
 
+  async create(input: InputLoanInterface): Promise<LoanInterface> {
+    const loanSlug = slug(input.remarks);
+    const existingLoan= await this.repository.findOne({
+       where:{ slug: loanSlug,type:input.type },
+    })
 
+    if (existingLoan) throw new Error("Loan is already Exist");
 
-// export class LoanService {
-//   private repository: LoanRepository
-//   constructor() {
-//     this.repository = new LoanRepository()
-//   }
-
-//   async create(input: InputLoanInterface): Promise<LoanInterface> {
-   
-//     const existingDescription = await this.repository.findOne({
-//       where: {
-//        where:{ description: input.description },
-//       },
-//     })
-
-//     if (existingDescription) {
-//         throw Boom.badRequest('Description is already exist');
-//     }
-
-//     const loan = await this.repository.create(input);
-//     return loan;
-//   }
+    const loan = await this.repository.create(input);
+    return loan;
+  }
 
 
-//   async findByPk(
-//     id: number,
-//     options = { exclude: ['deletedAt'] }
-//   ): Promise<LoanInterface> {
-//     const loanExists = await this.repository.findByPk(id)
+  async findByPk(
+    id: number,
+    options = { exclude: ['deletedAt'] }
+  ): Promise<LoanInterface> {
+    const loanExists = await this.repository.findByPk(id)
+    if (!loanExists) throw new Error(`Loan: ${id} does not exist!`)
+    return loanExists;
+  }
 
-//     if (!loanExists)
-//       throw Boom.notFound('Loan does not exist.', [
-//         { message: `Loan: ${id} does not exist!` },
-//       ])
-//     return loanExists;
-//   }
+  async updateOne(
+    id: Sequelize.CreationOptional<number>,
+    input: InputLoanInterface
+  ): Promise<LoanInterface> {
+    if (id) {
+      const loanExists = await this.repository.findByPk(id)
+       if (!loanExists) throw new Error(`Loan: ${id} does not exist!`)
+    }
+    await this.repository.updateOne({
+      id: id,
+      input: input,
+    })
+    return this.findByPk(id)
+  }
 
-//   async updateOne(
-//     id: Sequelize.CreationOptional<number>,
-//     input: InputLoanInterface
-//   ): Promise<LoanInterface> {
-//     if (id) {
-//       const loanExists = await this.repository.findByPk(id)
-//       if (!loanExists)
-//         throw Boom.notFound('Loan does not exist.', [
-//           { message: `Loan: ${id} does not exist!` },
-//         ])
-//     }
+  async deleteOne(id: number): Promise<boolean> {
+    const loanExists = await this.repository.findByPk(id);
+    if (!loanExists) throw new Error(`Loan: ${id} does not exist`);
+  
+    const remove = await this.repository.deleteOne(id);
+    if (remove === 0) throw new Error(`Loan: ${id} does not exist`);
+    return true;
+  }
 
-
-//     await this.repository.updateOne({
-//       id: id,
-//       input: input,
-//     })
-
-//     return this.findByPk(id)
-//   }
-
-//   async deleteOne(id: number): Promise<boolean> {
-//     const roleExists = await this.repository.findByPk(id)
-//     if (!roleExists)
-//       throw Boom.notFound('Loan does not exist!', [
-//         { message: `Loan: ${id} does not exist!` },
-//       ])
-
-//     const remove = await this.repository.deleteOne(id)
-//     if (remove === 0)
-//       throw Boom.notFound('Loan does not exist!', [
-//         { message: `Loan: ${id} does not exist!` },
-//       ])
-//     return true;
-//   }
-
-//   }
+  findAndCountAll({ offset, limit, query, sort, order, status, type  }: ArgsLoanInterface): Promise<{
+    count: number;
+    rows: LoanInterface[];
+  }> {
+    let where: WhereOptions<any> = {};
+    if (query) {
+      where = {
+        ...where,
+        [Sequelize.Op.or]: SequlizeQueryGenerator.searchRegex({
+          query,
+          columns: ['type','amount','status'],
+        }),
+      };
+    }
+    if(status) {
+      where = { ...where, status:status };
+    }
+    if(type) {
+        where = { ...where, type:type };
+      }
+    return this.repository.findAndCountAll({
+      where,
+      offset,
+      limit,
+      order: [[order, sort]],
+      distinct: true,
+    });
+  }
+  }
 

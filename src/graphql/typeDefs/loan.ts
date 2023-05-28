@@ -59,7 +59,7 @@ extend type Mutation {
 
 extend type Query {
     loan(id:Int!): SingleLoan
-    loans(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationLoans
+    loans(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, status:LoanStatus,type: LoanType  ): PaginationLoans
 }
 
 `;

@@ -1,86 +1,92 @@
-// import Boom from 'boom'
-// import * as Sequelize from 'sequelize'
-// import { Op, WhereOptions } from 'sequelize'
-// import {
-//     InvestmentInterface,
-//    InputInvestmentInterface
-// } from '../interfaces'
+import * as Sequelize from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
+import slug from 'slug';
+import { SequlizeQueryGenerator } from '../helpers';
+import {
+    InvestmentInterface,
+   InputInvestmentInterface,
+   ArgsInvestmentInterface
+} from '../interfaces'
 
-// import {InvestmentRepository} from '../repositories'
+import {InvestmentRepository} from '../repositories'
 
+export class InvestmentService {
+  private repository: InvestmentRepository
+  constructor() {
+    this.repository = new InvestmentRepository()
+  }
 
-
-// export class InvestmentService {
-//   private repository: InvestmentRepository
-//   constructor() {
-//     this.repository = new InvestmentRepository()
-//   }
-
-//   async create(input: InputInvestmentInterface): Promise<InvestmentInterface> {
-   
-//     const existingInvestment = await this.repository.findOne({
-//       where: {
-//        where:{ name: input.name },
-//       },
-//     })
-
-//     if (existingInvestment) {
-//         throw Boom.badRequest('Name is already taken');
-//     }
-
-//     const investment = await this.repository.create(input);
-//     return investment;
-//   }
+  async create(input: InputInvestmentInterface): Promise<InvestmentInterface> {
+    const investmentSlug = slug(input.name);
+    const existingInvestment = await this.repository.findOne({
+       where:{ slug: investmentSlug, type:input.type}
+    })
+    if (existingInvestment)  throw new Error(`Investment name already Exist`);
+    const investment = await this.repository.create(input);
+    return investment;
+  }
 
 
-//   async findByPk(
-//     id: number,
-//     options = { exclude: ['deletedAt'] }
-//   ): Promise<InvestmentInterface> {
-//     const investmentExists = await this.repository.findByPk(id)
+  async findByPk(
+    id: number,
+    options = { exclude: ['deletedAt'] }
+  ): Promise<InvestmentInterface> {
+    const investmentExists = await this.repository.findByPk(id)
 
-//     if (!investmentExists)
-//       throw Boom.notFound('Investment does not exist.', [
-//         { message: `Investment: ${id} does not exist!` },
-//       ])
-//     return investmentExists;
-//   }
+    if (!investmentExists)  throw new Error(`Investment ${id} does not exist`);
 
-//   async updateOne(
-//     id: Sequelize.CreationOptional<number>,
-//     input: InputInvestmentInterface
-//   ): Promise<InvestmentInterface> {
-//     if (id) {
-//       const investmentExists = await this.repository.findByPk(id)
-//       if (!investmentExists)
-//         throw Boom.notFound('Investment does not exist.', [
-//           { message: `Investment: ${id} does not exist!` },
-//         ])
-//     }
+    return investmentExists;
+  }
 
+  async updateOne(
+    id: Sequelize.CreationOptional<number>,
+    input: InputInvestmentInterface
+  ): Promise<InvestmentInterface> {
+    if (id) {
+      const investmentExists = await this.repository.findByPk(id)
+      if (!investmentExists)  throw new Error(`Investment ${id} does not exist`);
+    }
+    await this.repository.updateOne({
+      id: id,
+      input: input,
+    })
 
-//     await this.repository.updateOne({
-//       id: id,
-//       input: input,
-//     })
+    return this.findByPk(id)
+  }
 
-//     return this.findByPk(id)
-//   }
+  async deleteOne(id: number): Promise<boolean> {
+    const investmentExists = await this.repository.findByPk(id);
+    if (!investmentExists) throw new Error(`Investment: ${id} does not exist!`);
 
-//   async deleteOne(id: number): Promise<boolean> {
-//     const roleExists = await this.repository.findByPk(id)
-//     if (!roleExists)
-//       throw Boom.notFound('Investment does not exist!', [
-//         { message: `Investment: ${id} does not exist!` },
-//       ])
+    const remove = await this.repository.deleteOne(id);
+    if (remove === 0) throw new Error(`Investment: ${id} does not exist!`);
+    return true;
+  }
 
-//     const remove = await this.repository.deleteOne(id)
-//     if (remove === 0)
-//       throw Boom.notFound('Investment does not exist!', [
-//         { message: `Investment: ${id} does not exist!` },
-//       ])
-//     return true
-//   }
-
-//   }
+  findAndCountAll({ offset, limit, query, sort, order, type  }: ArgsInvestmentInterface): Promise<{
+    count: number;
+    rows: InvestmentInterface[];
+  }> {
+    let where: WhereOptions<any> = {};
+    if (query) {
+      where = {
+        ...where,
+        [Sequelize.Op.or]: SequlizeQueryGenerator.searchRegex({
+          query,
+          columns: ['name','amount'],
+        }),
+      };
+    }
+    if(type) {
+        where = { ...where, type:type };
+      }
+    return this.repository.findAndCountAll({
+      where,
+      offset,
+      limit,
+      order: [[order, sort]],
+      distinct: true,
+    });
+  }
+  }
 

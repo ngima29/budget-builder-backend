@@ -35,6 +35,12 @@ const Loan = sequelize.define<LoanModelInterface>(
             type: Sequelize.TEXT,
             allowNull: true,
           },
+      
+      slug: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          unique: true,
+        },
       date: {
             type: Sequelize.DATEONLY,
             allowNull: false,
