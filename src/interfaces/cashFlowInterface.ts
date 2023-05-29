@@ -27,5 +27,5 @@ export interface CashFlowModelInterface extends Sequelize.Model<Partial<CashFlow
 CashFlowInterface {}
 
 export  interface ArgsCashFlowInterface extends PaginationOrderSearchExtend{
-
+    type?: CashFlowTypeEnum;
 }

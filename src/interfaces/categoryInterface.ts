@@ -6,6 +6,7 @@ import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 export interface InputCategoryInterface {
     name: string;
     slug?: string;
+    userId?: Sequelize.CreationOptional<number>;
     type: CategoryTypeEnum; // enum income, expenses, other
 
 }
@@ -13,6 +14,7 @@ export interface InputCategoryInterface {
 export interface CategoryInterface extends ModelTimestampExtend {
     id: Sequelize.CreationOptional<number>;
     name: string;
+    userId: Sequelize.CreationOptional<number>;
     slug: string;
     type: CategoryTypeEnum; // enum income, expenses, other
 }
@@ -23,5 +25,5 @@ CategoryInterface {}
 
 
 export  interface ArgsCategoryInterface extends PaginationOrderSearchExtend{
-
+    type?: CategoryTypeEnum;
 }

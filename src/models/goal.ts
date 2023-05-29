@@ -59,7 +59,7 @@ const Goal = sequelize.define<GoalModelInterface>(
         indexes: [
             {
                 unique: true,
-                name: 'goals_slug_type_start_date_end_date',
+                name: 'goals_slug_type_startDate_endDate',
                 fields: ['slug','type','startDate','endDate'],
                 where: {
                     deleted_at : null,

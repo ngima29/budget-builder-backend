@@ -9,7 +9,7 @@ const createGoal = Joi.object({
   startDate: dateSchema.label('Start Date').required(),
   endDate: dateSchema.label('Ens Date').required(),
   totalAmount: positiveIntegerSchema.label("Interest Rate").required(),
-  description : stringSchema.label("Description ").allow(null, ''),
+  remarks : stringSchema.label("Description ").allow(null, ''),
 });
 
 const updateGoal = Joi.object({
@@ -18,7 +18,7 @@ const updateGoal = Joi.object({
   startDate: dateSchema.label('Start Date'),
   endDate: dateSchema.label('Ens Date'),
   totalAmount: positiveIntegerSchema.label("Interest Rate"),
-  description : stringSchema.label("Description "),
+  remarks : stringSchema.label("Description "),
   });
 
 export { createGoal,updateGoal };

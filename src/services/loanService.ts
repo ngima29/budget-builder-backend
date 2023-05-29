@@ -47,7 +47,7 @@ export class LoanService {
        if(input.remarks){
         const loanRemarksSlug = slug(input.remarks.toString());
         const existingLoanSlug = await this.repository.findOne({
-          where:{ slug:loanRemarksSlug },
+          where:{ slug:loanRemarksSlug, type:input.type },
         })
         if(existingLoanSlug) throw new Error(`Investment Name: ${input.remarks} is already exist`);
         input.slug = loanRemarksSlug;

@@ -13,6 +13,14 @@ const Category = sequelize.define<CategoryModelInterface>(
             autoIncrement: true,
             primaryKey: true,
           },
+          userId:{
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            references: {
+              model: 'users',
+              key: 'id',
+            },
+        },
         name: {
             type: Sequelize.STRING,
             allowNull: false,

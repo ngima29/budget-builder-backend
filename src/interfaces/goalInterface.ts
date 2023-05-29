@@ -29,4 +29,6 @@ export interface GoalInterface extends ModelTimestampExtend {
 export interface GoalModelInterface extends Sequelize.Model<Partial<GoalInterface >,Partial<InputGoalInterface>>,
 GoalInterface  {};
 
-export  interface ArgsGoalInterface extends PaginationOrderSearchExtend{};
+export  interface ArgsGoalInterface extends PaginationOrderSearchExtend{
+    type ?: GoalCategoryEnum;
+};

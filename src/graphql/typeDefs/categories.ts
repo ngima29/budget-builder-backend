@@ -18,8 +18,7 @@ input InputCategory {
  type Category {
     id: Int
     name: String
-    parentId: Int
-    level:Int
+    slug: String
     type: CategoryType
 }
  
@@ -42,7 +41,7 @@ extend type Mutation {
 
 extend type Query {
     category(id:Int!): SingleCategory
-    categories(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationCategories
+    categories(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CategoryType): PaginationCategories
 }
 
 `;

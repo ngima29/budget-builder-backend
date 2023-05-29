@@ -24,6 +24,7 @@ input InputGoal {
     id: Int
     userId: Int
     name: String
+    slug: String
     type: GoalType
     startDate: String
     endDate: String
@@ -51,7 +52,7 @@ extend type Mutation {
 
 extend type Query {
     goal(id:Int!): SingleGoal
-    goals(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationGoals
+    goals(offset: Int, limit: Int, query: String, sort: SortEnum, order: String,type: GoalType): PaginationGoals
 }
 
 `;

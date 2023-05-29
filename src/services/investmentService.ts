@@ -48,7 +48,7 @@ export class InvestmentService {
       if(input.name){
         const investmentSlug = slug(input.name.toString());
         const existingInvestment = await this.repository.findOne({
-          where:{ slug:investmentSlug },
+          where:{ slug:investmentSlug,type:input.type },
         })
         if(existingInvestment) throw new Error(`Investment Name: ${input.name} is already exist`);
         input.slug = investmentSlug;

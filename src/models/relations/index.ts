@@ -72,14 +72,14 @@ CashFlow.belongsTo(Category, {
 })
 
 /* Category and Goal relation */
-Category.hasMany(Goal, {
-  foreignKey: 'categoryId',
-  as: 'category_goal',
-})
+// Category.hasMany(Goal, {
+//   foreignKey: 'categoryId',
+//   as: 'category_goal',
+// })
 
-Goal.belongsTo(Category, {
-  foreignKey: 'categoryId',
-})
+// Goal.belongsTo(Category, {
+//   foreignKey: 'categoryId',
+//})
 
 /* Goal and GoalProgress relation */
 Goal.hasOne(GoalProgress, {

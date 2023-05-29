@@ -4,13 +4,13 @@ import {list} from "../utils";
 import { CategoryTypeEnum } from "../enums";
 
 const createCategory = Joi.object({
-  title: stringSchema.label("Title").required(),
+  name: stringSchema.label("Name").required(),
   type: stringSchema.label("Types").valid(...list(CategoryTypeEnum)).required(),
 
 });
 
 const updateCategory = Joi.object({
-  title: stringSchema.label("Title"),
+  name: stringSchema.label("Name"),
   type: stringSchema.label("Types").valid(...list(CategoryTypeEnum)),
 
   });

@@ -1,128 +1,100 @@
-// import Boom from 'boom'
-// import * as Sequelize from 'sequelize'
-// import { Op, WhereOptions } from 'sequelize'
-// import {
-//   CategoryInterface,
-//   InputCategoryInterface
-// } from '../interfaces'
+import * as Sequelize from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
+import slug from 'slug';
+import { SequlizeQueryGenerator } from '../helpers';
+import {
+ CategoryInterface,
+ ArgsCategoryInterface,
+ InputCategoryInterface
+} from '../interfaces'
 
-// import {CategoryRepository} from '../repositories'
+import {CategoryRepository} from '../repositories'
 
+export class CategoryService {
+  private repository: CategoryRepository
+  constructor() {
+    this.repository = new CategoryRepository()
+  }
 
-
-// export class CategoryService {
-//   private repository: CategoryRepository
-//   constructor() {
-//     this.repository = new CategoryRepository()
-//   }
-
-//   async create(input: InputCategoryInterface): Promise<any> {
-   
-//     const existingUser = await this.repository.findOne({
-//       where: {
-//        where:{ email: input.email },
-//       },
-//     })
-
-//     if (existingUser) {
-//         throw Boom.badRequest('Email is already taken')
-//     }
-
-//     const { hash, salt } = Password.generate(input.password)
-
-//     const credentials = [
-//       {
-//         hash,
-//         salt,
-//       },
-//     ] as UserCredentialInterface[]
-//     const user = await this.repository.create(input)
-//   }
+  async create(input: InputCategoryInterface): Promise<CategoryInterface> {
+    console.log(input)
+    const categorySlug = slug(input.name);
+    const existingCategory = await this.repository.findOne({
+       where:{ slug: categorySlug, type:input.type}
+    })
+    if (existingCategory)  throw new Error(`Category name already Exist`);
+    input.slug = categorySlug;
+    const category = await this.repository.create(input);
+    return category;
+  }
 
 
-//   async findByPk(
-//     id: number,
-//     options = { exclude: ['deletedAt'] }
-//   ): Promise<UserInterface> {
-//     const userExists = await this.repository.findByPk(id)
+  async findByPk(
+    id: number,
+    options = { exclude: ['deletedAt'] }
+  ): Promise<CategoryInterface> {
+    const categoryExists = await this.repository.findByPk(id)
 
-//     if (!userExists)
-//       throw Boom.notFound('Customer does not exist.', [
-//         { message: `Customer: ${id} does not exist!` },
-//       ])
-//     return userExists
-//   }
+    if (!categoryExists)  throw new Error(`category ${id} does not exist`);
 
-//   async updateOne(
-//     id: Sequelize.CreationOptional<number>,
-//     input: InputUserInterface
-//   ): Promise<UserInterface> {
-//     if (id) {
-//       const userExists = await this.repository.findByPk(id)
-//       if (!userExists)
-//         throw Boom.notFound('User does not exist.', [
-//           { message: `User: ${id} does not exist!` },
-//         ])
-//     }
+    return categoryExists;
+  }
 
-//     if (input.email) {
-//       const emailExists = await this.repository.findOne({
-//         where: { email: input.email?.trim() },
-//       })
-//       if (emailExists && emailExists.id !== id)
-//         throw Boom.notFound('Email not found.', [
-//           { message: `Email: ${input.email} is already exists!` },
-//         ])
-//     }
+  async updateOne(
+    id: Sequelize.CreationOptional<number>,
+    input: InputCategoryInterface
+  ): Promise<CategoryInterface> {
+      const categoryExists = await this.repository.findByPk(id)
+      if (!categoryExists)  throw new Error(`category ${id} does not exist`);
+      if(input.name){
+        const categorySlug = slug(input.name.toString());
+        const existingCategory = await this.repository.findOne({
+          where:{ slug:categorySlug, type:input.type },
+        })
+        if(existingCategory) throw new Error(`category Name: ${input.name} is already exist`);
+        input.slug = categorySlug;
+      }
+    await this.repository.updateOne({
+      id: id,
+      input: input,
+    })
 
-//     await this.repository.updateOne({
-//       id: id,
-//       input: input,
-//     })
+    return this.findByPk(id)
+  }
 
-//     return this.findByPk(id)
-//   }
+  async deleteOne(id: number): Promise<boolean> {
+    const categoryExists = await this.repository.findByPk(id);
+    if (!categoryExists) throw new Error(`category: ${id} does not exist!`);
 
-//   async deleteOne(id: number): Promise<boolean> {
-//     const roleExists = await this.repository.findByPk(id)
-//     if (!roleExists)
-//       throw Boom.notFound('User does not exist!', [
-//         { message: `User: ${id} does not exist!` },
-//       ])
+    const remove = await this.repository.deleteOne(id);
+    if (remove === 0) throw new Error(`category: ${id} does not exist!`);
+    return true;
+  }
 
-//     const remove = await this.repository.deleteOne(id)
-//     if (remove === 0)
-//       throw Boom.notFound('User does not exist!', [
-//         { message: `User: ${id} does not exist!` },
-//       ])
-//     return true
-//   }
+  findAndCountAll({ offset, limit, query, sort, order, type  }: ArgsCategoryInterface): Promise<{
+    count: number;
+    rows: CategoryInterface[];
+  }> {
+    let where: WhereOptions<any> = {};
+    if (query) {
+      where = {
+        ...where,
+        [Sequelize.Op.or]: SequlizeQueryGenerator.searchRegex({
+          query,
+          columns: ['name','type'],
+        }),
+      };
+    }
+    if(type) {
+        where = { ...where, type:type };
+      }
+    return this.repository.findAndCountAll({
+      where,
+      offset,
+      limit,
+      order: [[order, sort]],
+      distinct: true,
+    });
+  }
+  }
 
-//   async login(input: UserLogin): Promise<UserInterface> {
-//     const user = await this.repository.findOne({
-//       where: {
-//         where:  { email: input.email },
-//       },
-//       })
-
-//     if (!user) {
-//       throw Boom.unauthorized('Invalid Identifier or Password')
-//     }
-
-//     // const userPassword = await this.userCredentialRepository.findOne({
-//     //   where: { userId: user.id },
-//     // })
-
-//     // const validatePassword = Password.validate({
-//     //   password: input.password,
-//     //   // hash: userPassword.hash,
-//     //   // salt: userPassword.salt,
-//     // })
-
-//     // if (!validatePassword) {
-//     //   throw Boom.unauthorized('Invalid Identifier or Password')
-//     // }
-
-//     return user
-//   }
-// }

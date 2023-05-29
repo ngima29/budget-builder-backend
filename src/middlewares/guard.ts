@@ -18,12 +18,12 @@ class Guard {
       id:userId
     });
     if (!userExists) {
-      throw Error('Auth Failed');
+      throw Error('Auth Failed Please Try to login Again');
     }
     return userExists;
   };
   grant = (user: UserInterface | undefined): UserInterface => {
-    if (!user) throw Error('Auth Failed');
+    if (!user) throw Error('Auth Failed Please Try to login Again');
     return user;
   };
 

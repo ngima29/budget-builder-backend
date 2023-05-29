@@ -9,6 +9,14 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      userId:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+    },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -16,7 +24,6 @@ module.exports = {
       slug: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       type: {
         type: Sequelize.ENUM(

@@ -24,7 +24,7 @@ export const userResolvers:any = {
       Validator.check(signUp, args.input);
       const data = await new UserService().create(args.input);
       return SuccessResponse.send({
-        message: 'Attribute value is successfully created.',
+        message: 'User  is successfully created.',
         data: data,
       });
     },
@@ -38,7 +38,7 @@ export const userResolvers:any = {
         Validator.check(login, args.input);
         const data = await new UserService().login(args.input);
         return SuccessResponse.send({
-          message: 'Attribute value is successfully created.',
+          message: 'Successfully Login.',
           data: data,
         });
       },

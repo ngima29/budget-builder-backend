@@ -7,7 +7,7 @@ const createCashFlow = Joi.object({
   categoryId : positiveIntegerSchema.label('Category  ID').required(),
   goalId : positiveIntegerSchema.label('Goal  ID').allow(null, ''),
   amount: positiveIntegerSchema.label("Amount").required(),
-  description : stringSchema.label("Description ").allow(null, ''),
+  remarks : stringSchema.label("Remarks ").allow(null, ''),
   date: dateSchema.label(' Date').required(),
   type: stringSchema.label("Types").valid(...list(CashFlowTypeEnum)).required(),
 });
@@ -16,7 +16,7 @@ const updateCashFlow = Joi.object({
     categoryId : positiveIntegerSchema.label('Category  ID'),
     goalId : positiveIntegerSchema.label('Goal  ID'),
     amount: positiveIntegerSchema.label("Amount"),
-    description : stringSchema.label("Description "),
+    remarks : stringSchema.label("Remarks "),
     date: dateSchema.label(' Date'),
     type: stringSchema.label("Types").valid(...list(CashFlowTypeEnum)),
   });

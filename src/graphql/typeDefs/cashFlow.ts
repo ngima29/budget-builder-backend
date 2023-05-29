@@ -52,7 +52,7 @@ extend type Mutation {
 
 extend type Query {
     cashFlow(id:Int!): SingleCashFlow
-    cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String): PaginationCashFlow
+    cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CashFlowType): PaginationCashFlow
 }
 
 `;
