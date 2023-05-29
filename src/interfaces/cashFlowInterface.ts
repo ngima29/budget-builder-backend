@@ -7,7 +7,7 @@ export interface InputCashFlowInterface {
     categoryId: Sequelize.CreationOptional<number>;
     goalId? : Sequelize.CreationOptional<number>; // enum  category_Table['salary','investment','rent','partTimeJob','others']
     amount: number;
-    remarks?: string;
+    remarks: string;
     date: string;
     type: CashFlowTypeEnum;
 }

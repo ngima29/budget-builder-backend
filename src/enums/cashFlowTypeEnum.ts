@@ -1,4 +1,5 @@
 export enum CashFlowTypeEnum {
-    income = 'income',
-    expenses = 'expenses'
+    income = "income",
+    expenses = "expenses",
+   // others = 'others'
 }

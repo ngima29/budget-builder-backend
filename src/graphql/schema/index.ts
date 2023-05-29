@@ -1,5 +1,6 @@
 import { buildSubgraphSchema } from '@apollo/subgraph';
 import {
+  cashFlowResolvers,
   categoryResolvers,
   goalResolvers,
   investmentResolvers,
@@ -7,6 +8,7 @@ import {
   userResolvers,
 } from '../resolvers';
 import {
+  cashFlowDefs,
   CategoryDefs,
   GoalDefs,
   InvestmentDefs,
@@ -15,6 +17,7 @@ import {
 } from '../typeDefs';
 
 export const schema = buildSubgraphSchema([
+  { typeDefs: cashFlowDefs, resolvers: cashFlowResolvers },
   { typeDefs: CategoryDefs, resolvers: categoryResolvers },
   { typeDefs: GoalDefs, resolvers: goalResolvers },
   { typeDefs: InvestmentDefs, resolvers: investmentResolvers },

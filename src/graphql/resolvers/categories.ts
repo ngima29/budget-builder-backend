@@ -38,7 +38,7 @@ export const categoryResolvers:any = {
       ) => {
        const user= Guard.grant(contextValue.user);
         Validator.check(updateCategory, args.input);
-       // args.input.userId = user.id;
+         args.input.userId = user.id;
         const data = await new CategoryService().updateOne(args.id,args.input);
         return SuccessResponse.send({
           message: 'Category  is successfully Updated.',

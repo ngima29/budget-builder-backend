@@ -17,7 +17,7 @@ export class CashFlowService {
 
   async create(input: InputCashFlowInterface): Promise<CashFlowInterface> {
     const existingCashFlow= await this.repository.findOne({
-       where:{ categoryId: input.categoryId,type:input.type},
+       where:{ categoryId: input.categoryId,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
     })
     if (existingCashFlow) throw new Error("this Transaction is already Exist");
  
@@ -41,7 +41,9 @@ export class CashFlowService {
   ): Promise<CashFlowInterface> {
       const cashFlowExists = await this.repository.findByPk(id)
        if (!cashFlowExists) throw new Error(`Transaction: ${id} does not exist!`)
-  
+       const existingCashFlow= await this.repository.findOne({
+        where:{ categoryId: input.categoryId,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
+     })
     await this.repository.updateOne({
       id: id,
       input: input,

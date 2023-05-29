@@ -8,10 +8,6 @@ export const cashFlowDefs: DocumentNode = gql`#graphql
     expenses
    }
 
- enum SortEnum {
-        desc
-        asc
-    }
 
 input InputCashFlow {
     categoryId:Int
