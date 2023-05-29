@@ -18,14 +18,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      parentId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      level: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       type: {
         type: Sequelize.ENUM(
           'expenses',
@@ -49,9 +41,9 @@ module.exports = {
     });
 
     // Add index with unique constraint on slug, parentId, and type columns
-    await queryInterface.addIndex('categories', ['slug', 'parentId', 'type'], {
+    await queryInterface.addIndex('categories', ['slug', 'type'], {
       unique: true,
-      name: 'categories_slug_parent_id_type',
+      name: 'categories_slug_type',
       where: {
         deletedAt: null,
       },
