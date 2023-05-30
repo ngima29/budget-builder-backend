@@ -34,6 +34,7 @@ input InputGoal {
     remarks: String
     remainingDays: Int
     progressPercentage: Int
+    totalDays: Int
 }
  
  type SingleGoal {

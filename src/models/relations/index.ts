@@ -1,4 +1,4 @@
- import { CashFlow,Category,Goal,GoalProgress,Investment,Loan,User } from '../'
+ import { CashFlow,Category,Goal,Investment,Loan,User } from '../'
 
 /* User and CashFlow relation */
 User.hasMany(CashFlow, {
@@ -30,15 +30,7 @@ Goal.belongsTo(User, {
   foreignKey: 'userId',
 })
 
-/* User and GoalProgress relation */
-User.hasMany(GoalProgress, {
-  foreignKey: 'userId',
-  as: 'user_goalProgress',
-})
 
-GoalProgress.belongsTo(User, {
-  foreignKey: 'userId',
-})
 
 /* User and Investment relation */
 User.hasMany(Investment, {
@@ -81,15 +73,7 @@ CashFlow.belongsTo(Category, {
 //   foreignKey: 'categoryId',
 //})
 
-/* Goal and GoalProgress relation */
-Goal.hasOne(GoalProgress, {
-  foreignKey: 'goalId',
-  as: 'goal_goalProgress',
-})
 
-GoalProgress.belongsTo(Goal, {
-  foreignKey: 'goalId',
-})
 
 //  Goal and CashFlow  relation
 Goal.hasOne(CashFlow, {

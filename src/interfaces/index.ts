@@ -2,7 +2,6 @@ export * from './cashFlowInterface';
 export * from './categoryInterface'; 
 export * from './contextInterface';
 export * from './goalInterface'; 
-export * from './goalProgressInterface'; 
 export * from './investmentInterface';  
 export * from './loanInterface';  
 export * from './modelExtendInterface';

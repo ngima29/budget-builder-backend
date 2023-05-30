@@ -27,6 +27,7 @@ export interface GoalInterface extends ModelTimestampExtend {
     remarks: string;
     remainingDays: number;
     progressPercentage: number;
+    totalDays: number;
 }
 
 
