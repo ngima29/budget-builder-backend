@@ -17,6 +17,7 @@ input InputGoal {
     startDate: String
     endDate: String
     totalAmount: Int
+    currentAmount: Int
     remarks: String
 }
 
@@ -29,7 +30,10 @@ input InputGoal {
     startDate: String
     endDate: String
     totalAmount: Int
+    currentAmount: Int
     remarks: String
+    remainingDays: Int
+    progressPercentage: Int
 }
  
  type SingleGoal {

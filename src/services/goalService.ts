@@ -24,7 +24,7 @@ export class GoalService {
     if (existingGoal)  throw new Error(`goal name already Exist`);
     input.slug = goalSlug;
     const goal = await this.repository.create(input);
-    return goal;
+    return await this.repository.findByPk(goal.id);
   }
 
 
@@ -33,10 +33,19 @@ export class GoalService {
     options = { exclude: ['deletedAt'] }
   ): Promise<GoalInterface> {
     const goalExists = await this.repository.findByPk(id)
-
     if (!goalExists)  throw new Error(`goal ${id} does not exist`);
-
-    return goalExists;
+    const currentDate = new Date();
+    const progressPercentage = (goalExists.currentAmount / goalExists.totalAmount) * 100;
+    const goalEndDate = new Date(goalExists.endDate); // Convert endDate to a Date object without time
+    goalEndDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+    const remainingDays = Math.ceil(
+      (goalEndDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    return {
+      ...goalExists,
+      progressPercentage,
+      remainingDays,
+    };
   }
 
   async updateOne(

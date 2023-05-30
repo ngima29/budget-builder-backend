@@ -9,6 +9,7 @@ const createGoal = Joi.object({
   startDate: dateSchema.label('Start Date').required(),
   endDate: dateSchema.label('Ens Date').required(),
   totalAmount: positiveIntegerSchema.label("Interest Rate").required(),
+  currentAmount: positiveIntegerSchema.label("Interest Rate").required(),
   remarks : stringSchema.label("Description ").allow(null, ''),
 });
 
@@ -17,7 +18,8 @@ const updateGoal = Joi.object({
   type: stringSchema.label("Types").valid(...list(GoalCategoryEnum)),
   startDate: dateSchema.label('Start Date'),
   endDate: dateSchema.label('Ens Date'),
-  totalAmount: positiveIntegerSchema.label("Interest Rate"),
+  totalAmount: positiveIntegerSchema.label("Total Amount"),
+  currentAmount: positiveIntegerSchema.label("Current Amount").required(),
   remarks : stringSchema.label("Description "),
   });
 

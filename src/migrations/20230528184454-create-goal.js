@@ -46,6 +46,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      currentAmount: {
+        type : Sequelize.INTEGER,
+        allowNull: false,
+      },
       remarks: {
         type: Sequelize.TEXT,
         allowNull: true,

@@ -48,6 +48,10 @@ const Goal = sequelize.define<GoalModelInterface>(
             type : Sequelize.NUMBER,
             allowNull: false,
           },
+        currentAmount: {
+            type : Sequelize.NUMBER,
+            allowNull: false,
+          },
         remarks: {
             type: Sequelize.TEXT,
             allowNull: true,

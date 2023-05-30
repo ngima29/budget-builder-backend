@@ -11,6 +11,7 @@ import {
 } from '../../validators';
 import {SuccessResponse} from "../../helpers"
  import {CashFlowService, CategoryService} from "../../services"
+import { any } from 'joi';
 
 export const cashFlowResolvers:any = { 
     Mutation: {
@@ -25,6 +26,8 @@ export const cashFlowResolvers:any = {
       args.input.userId = user.id;
       const categoryExist = await new CategoryService().findByPk(args.input.categoryId);
       if(!categoryExist) throw new Error(`Category  ${args.input.categoryId} does not exist`);
+      //const categoryType = categoryExist.type;
+      //if( args.input.type != categoryType) throw new Error(`Category  ${args.input.categoryId} is  ${categoryExist.type} types`);
       const data = await new CashFlowService().create(args.input);
       return SuccessResponse.send({
         message: 'Transaction  is successfully created.',

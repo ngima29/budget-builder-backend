@@ -1,7 +1,7 @@
 import * as Sequelize from 'sequelize';
 import {GoalCategoryEnum} from '../enums';
 import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
-
+//remaining days and progress percentage front end dekhaune
 export interface InputGoalInterface {
     userId : Sequelize.CreationOptional<number>;
     name: string;
@@ -10,6 +10,7 @@ export interface InputGoalInterface {
     startDate: string;
     endDate: string;
     totalAmount: number;
+    currentAmount: number;
     remarks?: string;
 }
 
@@ -22,7 +23,10 @@ export interface GoalInterface extends ModelTimestampExtend {
     startDate: string;
     endDate: string;
     totalAmount: number;
+    currentAmount: number;
     remarks: string;
+    remainingDays: number;
+    progressPercentage: number;
 }
 
 
