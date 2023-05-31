@@ -47,7 +47,8 @@ module.exports = {
       type: {
         type: Sequelize.ENUM(
           'expenses',
-          'income'
+          'income',
+          'others'
         ),
         allowNull: false,
       },

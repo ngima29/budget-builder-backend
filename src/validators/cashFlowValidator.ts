@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { stringSchema,positiveIntegerSchema, dateSchema } from "./schemas";
 import {list} from "../utils";
-import { CashFlowTypeEnum } from "../enums";
+import { CategoryTypeEnum } from "../enums";
 
 const createCashFlow = Joi.object({
   categoryId : positiveIntegerSchema.label('Category  ID').required(),
@@ -9,7 +9,7 @@ const createCashFlow = Joi.object({
   amount: positiveIntegerSchema.label("Amount").required(),
   remarks : stringSchema.label("Remarks ").allow(null, ''),
   date: dateSchema.label(' Date').required(),
-  type: stringSchema.label("Types").valid(...list(CashFlowTypeEnum)).required(),
+  type: stringSchema.label("Types").valid(...list(CategoryTypeEnum)).required(),
 });
 
 const updateCashFlow = Joi.object({
@@ -18,7 +18,7 @@ const updateCashFlow = Joi.object({
     amount: positiveIntegerSchema.label("Amount"),
     remarks : stringSchema.label("Remarks "),
     date: dateSchema.label(' Date'),
-    type: stringSchema.label("Types").valid(...list(CashFlowTypeEnum)),
+    type: stringSchema.label("Types").valid(...list(CategoryTypeEnum)),
   });
 
 export { createCashFlow,updateCashFlow };

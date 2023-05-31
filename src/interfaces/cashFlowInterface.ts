@@ -1,5 +1,5 @@
 import * as Sequelize from 'sequelize';
-import {CashFlowTypeEnum} from '../enums'
+import {CategoryTypeEnum} from '../enums'
 import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 
 export interface InputCashFlowInterface {
@@ -9,7 +9,7 @@ export interface InputCashFlowInterface {
     amount: number;
     remarks: string;
     date: string;
-    type: CashFlowTypeEnum;
+    type: CategoryTypeEnum;
 }
 
 export interface CashFlowInterface extends ModelTimestampExtend{
@@ -20,12 +20,12 @@ export interface CashFlowInterface extends ModelTimestampExtend{
     amount: number;
     remarks: string;
     date: string;
-    type: CashFlowTypeEnum;
+    type: CategoryTypeEnum;
 }
 
 export interface CashFlowModelInterface extends Sequelize.Model<Partial<CashFlowInterface>,Partial<InputCashFlowInterface>>,
 CashFlowInterface {}
 
 export  interface ArgsCashFlowInterface extends PaginationOrderSearchExtend{
-    type?: CashFlowTypeEnum;
+    type?: CategoryTypeEnum;
 }

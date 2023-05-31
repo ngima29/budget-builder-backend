@@ -1,4 +1,3 @@
-export * from "./cashFlowTypeEnum";
 export * from "./categoryTypeEnum";
 export * from "./environmentEnum";
 export * from "./goalCategoryEnum";

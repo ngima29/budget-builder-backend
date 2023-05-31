@@ -3,11 +3,6 @@ import gql from 'graphql-tag';
 
 export const cashFlowDefs: DocumentNode = gql`#graphql
 
- enum CashFlowType {
-    income
-    expenses
-   }
-
 
 input InputCashFlow {
     categoryId:Int
@@ -15,7 +10,7 @@ input InputCashFlow {
     amount: Int
     remarks: String
     date: String
-    type: CashFlowType
+    type: CategoryType
 }
 
  type CashFlow {
@@ -26,7 +21,7 @@ input InputCashFlow {
     amount: Int
     remarks: String
     date: String
-    type: CashFlowType
+    type: CategoryType
 }
  
  type SingleCashFlow {
@@ -48,7 +43,7 @@ extend type Mutation {
 
 extend type Query {
     cashFlow(id:Int!): SingleCashFlow
-    cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CashFlowType): PaginationCashFlow
+    cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CategoryType): PaginationCashFlow
 }
 
 `;

@@ -1,7 +1,7 @@
 import * as Sequelize from "sequelize";
 import { CashFlowModelInterface} from '../interfaces';
 import { Database } from "./instance";
-import {CashFlowTypeEnum} from "../enums";
+import {CategoryTypeEnum} from "../enums";
 
 const sequelize = Database.sequelize;
 
@@ -50,9 +50,8 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
             allowNull: false,   
         },
         type: {
-            type: Sequelize.ENUM(CashFlowTypeEnum.expenses,CashFlowTypeEnum.income),
+            type: Sequelize.ENUM(CategoryTypeEnum.expenses,CategoryTypeEnum.income,CategoryTypeEnum.others),
             allowNull: false,
-            
         }
 
     },{
