@@ -104,9 +104,7 @@ class CashFlowService {
         if (type) {
             where = { ...where, type: type };
         }
-        console.log(where);
         return await this.repository.sum({ where }, 'amount');
-        //const expensesResult = await this.repository.sum({ where }, 'amount', { where: { ...where, type: 'expenses' } });
     }
 }
 exports.CashFlowService = CashFlowService;

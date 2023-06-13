@@ -95,5 +95,23 @@ export class InvestmentService {
       distinct: true,
     });
   }
+  async sum({
+    userId,
+    fromDate,
+    toDate,
+  }: {
+    userId: number;
+    fromDate?: Date;
+    toDate?: Date;
+  }): Promise<number> {
+    let where: WhereOptions<any> = {};
+    if (userId) {
+      where = { ...where, userId: userId };
+    }
+    if (fromDate && toDate) {
+      where = { ...where, createdAt: { [Sequelize.Op.between]: [fromDate, toDate] } };
+    }
+    return await this.repository.sum( {where }, 'amount');
+  }
   }
 

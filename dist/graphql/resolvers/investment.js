@@ -69,5 +69,15 @@ exports.investmentResolvers = {
                 count: count,
             });
         },
+        investmentsCountSummaries: async (parent, args, contextValue, info) => {
+            const user = middlewares_1.Guard.grant(contextValue.user);
+            const total = await new services_1.InvestmentService().sum({ userId: user.id, fromDate: args.fromDate, toDate: args.toDate });
+            return helpers_1.SuccessResponse.send({
+                message: 'Investment counts is successfully fetched.',
+                data: {
+                    total: total
+                }
+            });
+        }
     }
 };

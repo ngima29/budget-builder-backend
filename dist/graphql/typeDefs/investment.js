@@ -46,7 +46,14 @@ input InputInvestment {
   data: [Investment]
  }
 
+ type investmentsCount {
+    total: Float
+  }
 
+ type investmentsCountSummery{
+    message: String
+    data: investmentsCount
+ }
 
 extend type Mutation {
  createInvestment(input: InputInvestment!): SingleInvestment
@@ -57,6 +64,7 @@ extend type Mutation {
 extend type Query {
     investment(id:Int!): SingleInvestment
     investments(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: InvestmentType): PaginationInvestments
+    investmentsCountSummaries(fromDate: Date, toDate: Date):investmentsCountSummery
 }
 
 `;

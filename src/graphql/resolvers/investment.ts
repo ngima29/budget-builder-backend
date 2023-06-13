@@ -3,7 +3,8 @@ import { defaultOrder, defaultSort, pgMaxLimit, pgMinLimit } from '../../config'
 import {
   ContextInterface,
   InputInvestmentInterface,
-  ArgsInvestmentInterface
+  ArgsInvestmentInterface,
+  InBetweenDateExtend
 } from '../../interfaces';
 import { Guard, Validator } from '../../middlewares';
 import {
@@ -105,7 +106,24 @@ Query: {
           data: data,
           count: count,
         });
-      },
+      },   
+  investmentsCountSummaries:  async (
+        parent: ParentNode,
+        args: InBetweenDateExtend,
+        contextValue: ContextInterface,
+        info: InformationEvent,
+      ) => {
+        const user = Guard.grant(contextValue.user)
+        const total = await new InvestmentService().sum({userId:user.id,fromDate: args.fromDate, toDate: args.toDate });
+      
+        return SuccessResponse.send({
+          message: 'Investment counts is successfully fetched.',
+          data: {
+            total: total
+          }
+        })
+     
+      }
 
 }
 }
