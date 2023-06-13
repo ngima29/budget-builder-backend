@@ -2,7 +2,7 @@ import {DocumentNode} from 'graphql';
 import gql from 'graphql-tag';
 
 export const cashFlowDefs: DocumentNode = gql`#graphql
-
+ scalar Date
 
 input InputCashFlow {
     categoryId:Int
@@ -33,7 +33,17 @@ input InputCashFlow {
   message: String
   data: [CashFlow]
  }
+  
+  type cashFlowsCount {
+   income: Float
+   expenses: Float
+    total: Float
+  }
 
+ type cashFlowsCountSummery{
+    message: String
+    data: cashFlowsCount
+ }
 
 extend type Mutation {
  createCashFlow(input: InputCashFlow!): SingleCashFlow
@@ -44,6 +54,7 @@ extend type Mutation {
 extend type Query {
     cashFlow(id:Int!): SingleCashFlow
     cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CategoryType): PaginationCashFlow
+    cashFlowsCountSummaries(fromDate: Date, toDate: Date):cashFlowsCountSummery
 }
 
 `;

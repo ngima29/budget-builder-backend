@@ -26,6 +26,12 @@ class BaseRepository {
             distinct,
         });
     }
+    count({ where }) {
+        return this.model.count({ where });
+    }
+    sum({ where }, columnName) {
+        return this.model.sum(columnName, { where });
+    }
     create(input, include) {
         return this.model.create(input, include);
     }

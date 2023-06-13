@@ -4,14 +4,15 @@ import {
   ContextInterface,
   InputCashFlowInterface,
   ArgsCashFlowInterface,
+  InBetweenDateExtend,
 } from '../../interfaces';
 import { Guard, Validator } from '../../middlewares';
 import {
     createCashFlow,updateCashFlow
 } from '../../validators';
 import {SuccessResponse} from "../../helpers"
- import {CashFlowService, CategoryService} from "../../services"
-import { any } from 'joi';
+import {CashFlowService, CategoryService} from "../../services"
+import {CategoryTypeEnum} from '../../enums'
 
 export const cashFlowResolvers:any = { 
     Mutation: {
@@ -115,6 +116,25 @@ Query: {
           count: count,
         });
       },
-
+  cashFlowsCountSummaries:  async (
+    parent: ParentNode,
+    args: InBetweenDateExtend,
+    contextValue: ContextInterface,
+    info: InformationEvent,
+  ) => {
+    const user = Guard.grant(contextValue.user)
+    const income = await new CashFlowService().sum({userId:user.id, type:CategoryTypeEnum.income,fromDate: args.fromDate, toDate: args.toDate });
+    const expenses = await new CashFlowService().sum({userId:user.id, type:CategoryTypeEnum.expenses,fromDate: args.fromDate, toDate: args.toDate });  
+    
+    return SuccessResponse.send({
+      message: 'Cash Flow counts is successfully fetched.',
+      data: {
+        income:income,
+        expenses:expenses,
+        total: income+expenses
+      }
+    })
+ 
+  }
 }
 }

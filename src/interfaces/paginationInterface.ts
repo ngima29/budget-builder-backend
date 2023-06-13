@@ -13,6 +13,10 @@ export interface OrderExtend {
 export interface SearchExtend {
   query?: string;
 }
+export interface InBetweenDateExtend {
+  fromDate?: Date;
+  toDate?: Date;
+}
 
 export interface PaginationOrderSearchExtend extends PaginationExtend, OrderExtend, SearchExtend { }
 

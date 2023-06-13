@@ -8,6 +8,7 @@ import {
 } from '../interfaces'
 import { SequlizeQueryGenerator } from '../helpers';
 import {CashFlowRepository} from '../repositories'
+import {CategoryTypeEnum} from '../enums'
 
 export class CashFlowService {
   private repository: CashFlowRepository
@@ -86,6 +87,36 @@ export class CashFlowService {
       order: [[order, sort]],
       distinct: true,
     });
+  }
+  async sum({
+    type,
+    userId,
+    fromDate,
+    toDate,
+  }: {
+    type?: CategoryTypeEnum;
+    userId: number;
+    fromDate?: Date;
+    toDate?: Date;
+  }): Promise<number> {
+    let where: WhereOptions<any> = {};
+    if (userId) {
+      where = { ...where, userId: userId };
+    }
+   
+    if (fromDate && toDate) {
+      where = { ...where, createdAt: { [Sequelize.Op.between]: [fromDate, toDate] } };
+    }
+
+    if(type){
+      where = { ...where, type:type };
+    }
+    console.log(where)
+    return await this.repository.sum( {where }, 'amount');
+
+    //const expensesResult = await this.repository.sum({ where }, 'amount', { where: { ...where, type: 'expenses' } });
+
+  
   }
   }
 

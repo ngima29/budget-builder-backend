@@ -6,6 +6,7 @@ const middlewares_1 = require("../../middlewares");
 const validators_1 = require("../../validators");
 const helpers_1 = require("../../helpers");
 const services_1 = require("../../services");
+const enums_1 = require("../../enums");
 exports.cashFlowResolvers = {
     Mutation: {
         createCashFlow: async (parent, args, contextValue, info) => {
@@ -79,5 +80,18 @@ exports.cashFlowResolvers = {
                 count: count,
             });
         },
+        cashFlowsCountSummaries: async (parent, args, contextValue, info) => {
+            const user = middlewares_1.Guard.grant(contextValue.user);
+            const income = await new services_1.CashFlowService().sum({ userId: user.id, type: enums_1.CategoryTypeEnum.income, fromDate: args.fromDate, toDate: args.toDate });
+            const expenses = await new services_1.CashFlowService().sum({ userId: user.id, type: enums_1.CategoryTypeEnum.expenses, fromDate: args.fromDate, toDate: args.toDate });
+            return helpers_1.SuccessResponse.send({
+                message: 'Cash Flow counts is successfully fetched.',
+                data: {
+                    income: income,
+                    expenses: expenses,
+                    total: income + expenses
+                }
+            });
+        }
     }
 };

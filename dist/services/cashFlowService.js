@@ -93,5 +93,20 @@ class CashFlowService {
             distinct: true,
         });
     }
+    async sum({ type, userId, fromDate, toDate, }) {
+        let where = {};
+        if (userId) {
+            where = { ...where, userId: userId };
+        }
+        if (fromDate && toDate) {
+            where = { ...where, createdAt: { [Sequelize.Op.between]: [fromDate, toDate] } };
+        }
+        if (type) {
+            where = { ...where, type: type };
+        }
+        console.log(where);
+        return await this.repository.sum({ where }, 'amount');
+        //const expensesResult = await this.repository.sum({ where }, 'amount', { where: { ...where, type: 'expenses' } });
+    }
 }
 exports.CashFlowService = CashFlowService;

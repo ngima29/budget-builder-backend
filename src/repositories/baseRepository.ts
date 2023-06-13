@@ -72,6 +72,9 @@ interface RepositoryReader<RT> {
     limit?: number
     distinct?: boolean
   }): Promise<{ count: number; rows: RT[] }>
+  count({ where }: { where?: WhereOptions<any> }): Promise<number>;
+  sum({ where }: { where?: WhereOptions<any> }, columnName: string): Promise<number>;
+  
 }
 
 export abstract class BaseRepository<IT, RT>
@@ -144,7 +147,13 @@ export abstract class BaseRepository<IT, RT>
       distinct,
     })
   }
-
+  count({ where }: { where?: WhereOptions<any> }): Promise<number> {
+    return this.model.count({ where });
+  }
+  sum({ where }: { where?: WhereOptions<any> }, columnName: string): Promise<number> {
+    return this.model.sum(columnName, { where });
+  }
+  
   create(input: Partial<IT>, include?: IncludeOptions): Promise<RT> {
     return this.model.create(input, include)
   }

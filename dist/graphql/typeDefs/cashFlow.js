@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.cashFlowDefs = void 0;
 const graphql_tag_1 = __importDefault(require("graphql-tag"));
 exports.cashFlowDefs = (0, graphql_tag_1.default) `#graphql
-
+ scalar Date
 
 input InputCashFlow {
     categoryId:Int
@@ -37,7 +37,17 @@ input InputCashFlow {
   message: String
   data: [CashFlow]
  }
+  
+  type cashFlowsCount {
+   income: Float
+   expenses: Float
+    total: Float
+  }
 
+ type cashFlowsCountSummery{
+    message: String
+    data: cashFlowsCount
+ }
 
 extend type Mutation {
  createCashFlow(input: InputCashFlow!): SingleCashFlow
@@ -48,6 +58,7 @@ extend type Mutation {
 extend type Query {
     cashFlow(id:Int!): SingleCashFlow
     cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CategoryType): PaginationCashFlow
+    cashFlowsCountSummaries(fromDate: Date, toDate: Date):cashFlowsCountSummery
 }
 
 `;
