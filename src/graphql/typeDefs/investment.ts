@@ -42,13 +42,13 @@ input InputInvestment {
   data: [Investment]
  }
 
- type investmentsCount {
+ type InvestmentsCount {
     total: Float
   }
 
- type investmentsCountSummery{
+ type InvestmentsCountSummery{
     message: String
-    data: investmentsCount
+    data: InvestmentsCount
  }
 
 extend type Mutation {
@@ -60,7 +60,7 @@ extend type Mutation {
 extend type Query {
     investment(id:Int!): SingleInvestment
     investments(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: InvestmentType): PaginationInvestments
-    investmentsCountSummaries(fromDate: Date, toDate: Date):investmentsCountSummery
+    investmentsCountSummaries(fromDate: Date, toDate: Date):InvestmentsCountSummery
 }
 
 `;

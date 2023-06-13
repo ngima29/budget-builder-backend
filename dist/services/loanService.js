@@ -81,6 +81,19 @@ class LoanService {
             throw new Error(`Loan: ${id} does not exist`);
         return true;
     }
+    async sum({ type, userId, fromDate, toDate, }) {
+        let where = {};
+        if (userId) {
+            where = { ...where, userId: userId };
+        }
+        if (fromDate && toDate) {
+            where = { ...where, createdAt: { [Sequelize.Op.between]: [fromDate, toDate] } };
+        }
+        if (type) {
+            where = { ...where, type: type };
+        }
+        return await this.repository.sum({ where }, 'amount');
+    }
     findAndCountAll({ offset, limit, query, sort, order, status, type }) {
         let where = {
         // deleted_at: null,

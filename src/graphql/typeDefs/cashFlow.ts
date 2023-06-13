@@ -34,15 +34,15 @@ input InputCashFlow {
   data: [CashFlow]
  }
   
-  type cashFlowsCount {
+  type CashFlowsCount {
    income: Float
    expenses: Float
     total: Float
   }
 
- type cashFlowsCountSummery{
+ type CashFlowsCountSummery{
     message: String
-    data: cashFlowsCount
+    data: CashFlowsCount
  }
 
 extend type Mutation {
@@ -54,7 +54,7 @@ extend type Mutation {
 extend type Query {
     cashFlow(id:Int!): SingleCashFlow
     cashFlows(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, type: CategoryType): PaginationCashFlow
-    cashFlowsCountSummaries(fromDate: Date, toDate: Date):cashFlowsCountSummery
+    cashFlowsCountSummaries(fromDate: Date, toDate: Date):CashFlowsCountSummery
 }
 
 `;

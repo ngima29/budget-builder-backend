@@ -46,6 +46,17 @@ input InputLoan {
   message: String
   data: [Loan]
  }
+ 
+ type LoansCount { 
+    given: Float
+    received: Float
+    total: Float
+  }
+
+ type LoansCountSummery{
+    message: String
+    data: LoansCount
+ }
 
 
 extend type Mutation {
@@ -57,6 +68,7 @@ extend type Mutation {
 extend type Query {
     loan(id:Int!): SingleLoan
     loans(offset: Int, limit: Int, query: String, sort: SortEnum, order: String, status:LoanStatus,type: LoanType  ): PaginationLoans
+    loansCountSummaries(fromDate: Date, toDate: Date):LoansCountSummery
 }
 
 `;

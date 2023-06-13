@@ -6,6 +6,7 @@ const middlewares_1 = require("../../middlewares");
 const validators_1 = require("../../validators");
 const helpers_1 = require("../../helpers");
 const services_1 = require("../../services");
+const enums_1 = require("../../enums");
 exports.loanResolvers = {
     Mutation: {
         createLoan: async (parent, args, contextValue, info) => {
@@ -71,5 +72,18 @@ exports.loanResolvers = {
                 count: count,
             });
         },
+        loansCountSummaries: async (parent, args, contextValue, info) => {
+            const user = middlewares_1.Guard.grant(contextValue.user);
+            const given = await new services_1.LoanService().sum({ userId: user.id, type: enums_1.LoanTypeEnum.given, fromDate: args.fromDate, toDate: args.toDate });
+            const received = await new services_1.LoanService().sum({ userId: user.id, type: enums_1.LoanTypeEnum.received, fromDate: args.fromDate, toDate: args.toDate });
+            return helpers_1.SuccessResponse.send({
+                message: 'Loan counts is successfully fetched.',
+                data: {
+                    given: given,
+                    received: received,
+                    total: given + received
+                }
+            });
+        }
     }
 };

@@ -3,13 +3,14 @@ import { defaultOrder, defaultSort, pgMaxLimit, pgMinLimit } from '../../config'
 import {
   ContextInterface,
   InputLoanInterface,
-  ArgsLoanInterface
+  ArgsLoanInterface,
+  InBetweenDateExtend
 } from '../../interfaces';
 import { Guard, Validator } from '../../middlewares';
 import {createLoan, updateLoan} from '../../validators';
 import {SuccessResponse} from "../../helpers"
- import {LoanService} from "../../services"
-
+import {LoanService} from "../../services"
+import {LoanTypeEnum} from '../../enums'
 export const loanResolvers:any = { 
     Mutation: {
       createLoan: async (
@@ -107,6 +108,26 @@ Query: {
           count: count,
         });
       },
+loansCountSummaries:  async (
+        parent: ParentNode,
+        args: InBetweenDateExtend,
+        contextValue: ContextInterface,
+        info: InformationEvent,
+      ) => {
+        const user = Guard.grant(contextValue.user)
+        const given = await new LoanService().sum({userId:user.id, type:LoanTypeEnum.given,fromDate: args.fromDate, toDate: args.toDate });
+        const received = await new LoanService().sum({userId:user.id, type:LoanTypeEnum.received,fromDate: args.fromDate, toDate: args.toDate });  
+        
+        return SuccessResponse.send({
+          message: 'Loan counts is successfully fetched.',
+          data: {
+            given:given,
+            received:received,
+            total: given+received
+          }
+        })
+     
+      }
 
 }
 }
