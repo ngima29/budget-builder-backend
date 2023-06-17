@@ -9,8 +9,8 @@ exports.cashFlowDefs = (0, graphql_tag_1.default) `#graphql
  scalar Date
 
 input InputCashFlow {
-    categoryId:Int
-    goalId: Int
+    category: String
+    goal: String
     amount: Int
     remarks: String
     date: String
@@ -20,8 +20,8 @@ input InputCashFlow {
  type CashFlow {
     id: Int
     userId:Int
-    categoryId:Int
-    goalId: Int
+    categories: Category
+    goal: String
     amount: Int
     remarks: String
     date: String

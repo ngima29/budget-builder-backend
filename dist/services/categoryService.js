@@ -54,6 +54,21 @@ class CategoryService {
             throw new Error(`category ${id} does not exist`);
         return categoryExists;
     }
+    async findOne(name) {
+        console.log(name);
+        let where = {};
+        if (name) {
+            const newName = name;
+            console.log(newName);
+            let slugExist = (0, slug_1.default)(newName);
+            console.log(slugExist);
+            where = { ...where, slug: slugExist };
+        }
+        const categoryExist = this.repository.findOne({ where: where });
+        if (!categoryExist)
+            throw new Error(`Category ${name} does not exist`);
+        return categoryExist;
+    }
     async updateOne(id, input) {
         const categoryExists = await this.repository.findByPk(id);
         if (!categoryExists)

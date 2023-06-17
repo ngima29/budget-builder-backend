@@ -22,20 +22,22 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
               key: 'id',
             },
         },
-        categoryId:{
+        category:{
             type: Sequelize.INTEGER,
             references: {
               model: 'categories',
               key: 'id',
             },
+            field:'categoryId',
         },
-        goalId:{
+        goal:{
             type: Sequelize.INTEGER,
             allowNull:true,
             references: {
               model: 'goals',
               key: 'id',
             },
+            field:'goalId',
         },
         amount:{
             type: Sequelize.NUMBER,

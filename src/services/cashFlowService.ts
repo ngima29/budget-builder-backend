@@ -1,6 +1,7 @@
 import * as Sequelize from 'sequelize';
 import { Op, WhereOptions } from 'sequelize';
 import slug from 'slug';
+import { Category } from '../models';
 import {
    CashFlowInterface,
    InputCashFlowInterface,
@@ -18,7 +19,7 @@ export class CashFlowService {
 
   async create(input: InputCashFlowInterface): Promise<CashFlowInterface> {
     const existingCashFlow= await this.repository.findOne({
-       where:{ categoryId: input.categoryId,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
+       where:{ categoryId: input.category,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
     })
     if (existingCashFlow) throw new Error("this Transaction is already Exist");
  
@@ -43,7 +44,7 @@ export class CashFlowService {
       const cashFlowExists = await this.repository.findByPk(id)
        if (!cashFlowExists) throw new Error(`Transaction: ${id} does not exist!`)
        const existingCashFlow= await this.repository.findOne({
-        where:{ categoryId: input.categoryId,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
+        where:{ categoryId: input.category,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
      })
     await this.repository.updateOne({
       id: id,
@@ -86,6 +87,13 @@ export class CashFlowService {
       limit,
       order: [[order, sort]],
       distinct: true,
+      include:[
+        {
+          model: Category,
+          as: 'categories',
+          attributes:['id', 'name','type']
+        }
+      ]
     });
   }
   async sum({

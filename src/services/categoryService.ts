@@ -39,7 +39,21 @@ export class CategoryService {
 
     return categoryExists;
   }
+ async findOne( name: string | number):Promise<CategoryInterface> {
+  console.log(name)
+     let where : WhereOptions <any> = {}
+      if(name){
+        const newName: string = name as string 
+        console.log(newName)
+        let slugExist = slug(newName)
+        console.log(slugExist)
+        where = {...where, slug:slugExist }
+      }
+      const categoryExist = this.repository.findOne({where:where})
+       if(!categoryExist) throw new Error(`Category ${name} does not exist`);
+       return categoryExist;
 
+ }
   async updateOne(
     id: Sequelize.CreationOptional<number>,
     input: InputCategoryInterface

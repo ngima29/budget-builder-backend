@@ -4,8 +4,8 @@ import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 
 export interface InputCashFlowInterface {
     userId: Sequelize.CreationOptional<number>;
-    categoryId: Sequelize.CreationOptional<number>;
-    goalId? : Sequelize.CreationOptional<number>; // enum  category_Table['salary','investment','rent','partTimeJob','others']
+    category: string|number ;
+    goal? : string | number; // enum  category_Table['salary','investment','rent','partTimeJob','others']
     amount: number;
     remarks: string;
     date: string;
@@ -15,8 +15,8 @@ export interface InputCashFlowInterface {
 export interface CashFlowInterface extends ModelTimestampExtend{
     id: Sequelize.CreationOptional<number>;
     userId : Sequelize.CreationOptional<number>;
-    categoryId: Sequelize.CreationOptional<number>;
-    goalId : Sequelize.CreationOptional<number>;
+    category: string;
+    goal : string | number;
     amount: number;
     remarks: string;
     date: string;

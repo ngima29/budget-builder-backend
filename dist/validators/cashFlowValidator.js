@@ -9,8 +9,8 @@ const schemas_1 = require("./schemas");
 const utils_1 = require("../utils");
 const enums_1 = require("../enums");
 const createCashFlow = joi_1.default.object({
-    categoryId: schemas_1.positiveIntegerSchema.label('Category  ID').required(),
-    goalId: schemas_1.positiveIntegerSchema.label('Goal  ID').allow(null, ''),
+    category: schemas_1.stringSchema.label('Category').required(),
+    goal: schemas_1.stringSchema.label('Goal ').allow(null, ''),
     amount: schemas_1.positiveIntegerSchema.label("Amount").required(),
     remarks: schemas_1.stringSchema.label("Remarks ").allow(null, ''),
     date: schemas_1.dateSchema.label(' Date').required(),
@@ -18,8 +18,8 @@ const createCashFlow = joi_1.default.object({
 });
 exports.createCashFlow = createCashFlow;
 const updateCashFlow = joi_1.default.object({
-    categoryId: schemas_1.positiveIntegerSchema.label('Category  ID'),
-    goalId: schemas_1.positiveIntegerSchema.label('Goal  ID'),
+    category: schemas_1.stringSchema.label('Category').required(),
+    goal: schemas_1.stringSchema.label('Goal ').allow(null, ''),
     amount: schemas_1.positiveIntegerSchema.label("Amount"),
     remarks: schemas_1.stringSchema.label("Remarks "),
     date: schemas_1.dateSchema.label(' Date'),

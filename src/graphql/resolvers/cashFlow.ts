@@ -25,13 +25,14 @@ export const cashFlowResolvers:any = {
       const user = Guard.grant(contextValue.user)
       Validator.check(createCashFlow, args.input);
       args.input.userId = user.id;
-      const categoryExist = await new CategoryService().findByPk(args.input.categoryId);
-      if(!categoryExist) throw new Error(`Category  ${args.input.categoryId} does not exist`);
-      if( args.input.type !==  categoryExist.type) throw new Error(`Category  ${args.input.categoryId} is  ${categoryExist.type} types`);
-      
+      const categoryExist = await new CategoryService().findOne(args.input.category);
+      console.log(categoryExist)
+      if(!categoryExist) throw new Error(`Category  ${args.input.category} does not exist`);
+      if( args.input.type !==  categoryExist.type) throw new Error(`Category  ${args.input.category} is  ${categoryExist.type} types`);
+      args.input.category = categoryExist.id
       const data = await new CashFlowService().create(args.input);
       return SuccessResponse.send({
-        message: 'Transaction  is successfully created.',
+        message: 'Category  is successfully created.',
         data: data,
       });
     },
@@ -45,13 +46,13 @@ export const cashFlowResolvers:any = {
        const user= Guard.grant(contextValue.user);
         Validator.check(updateCashFlow, args.input);
         args.input.userId = user.id;
-        const categoryExist = await new CategoryService().findByPk(args.input.categoryId);
-        if(!categoryExist) throw new Error(`Category  ${args.input.categoryId} does not exist`);
-        if( args.input.type !==  categoryExist.type) throw new Error(`Category  ${args.input.categoryId} is  ${categoryExist.type} types`);
-      
+        const categoryExist = await new CategoryService().findOne(args.input.category);
+        if(!categoryExist) throw new Error(`Category  ${args.input.category} does not exist`);
+        if( args.input.type !==  categoryExist.type) throw new Error(`Category  ${args.input.category} is  ${categoryExist.type} types`);
+        args.input.category = categoryExist.id
         const data = await new CashFlowService().updateOne(args.id,args.input);
         return SuccessResponse.send({
-          message: 'Transaction  is successfully Updated.',
+          message: 'Category  is successfully Updated.',
           data: data,
         });
       },
@@ -65,7 +66,7 @@ export const cashFlowResolvers:any = {
         Guard.grant(contextValue.user);
          await new CashFlowService().deleteOne(args.id);
         return SuccessResponse.send({
-          message: 'Transaction is successfully Deleted.'
+          message: 'Category is successfully Deleted.'
         });
       }
 
@@ -80,7 +81,7 @@ Query: {
         Guard.grant(contextValue.user);
         const data= await new CashFlowService().findByPk(args.id);
         return SuccessResponse.send({
-          message: 'Transaction is successfully Fetched.',
+          message: 'Category is successfully Fetched.',
           data: data
         });
       },
@@ -111,7 +112,7 @@ Query: {
         });
   
         return SuccessResponse.send({
-          message: 'Transaction  list is successfully fetched.',
+          message: 'Category  list is successfully fetched.',
           data: data,
           count: count,
         });

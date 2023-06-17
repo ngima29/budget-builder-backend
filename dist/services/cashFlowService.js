@@ -25,6 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CashFlowService = void 0;
 const Sequelize = __importStar(require("sequelize"));
+const models_1 = require("../models");
 const helpers_1 = require("../helpers");
 const repositories_1 = require("../repositories");
 class CashFlowService {
@@ -34,7 +35,7 @@ class CashFlowService {
     }
     async create(input) {
         const existingCashFlow = await this.repository.findOne({
-            where: { categoryId: input.categoryId, type: input.type, remarks: input.remarks, date: input.date, amount: input.amount },
+            where: { categoryId: input.category, type: input.type, remarks: input.remarks, date: input.date, amount: input.amount },
         });
         if (existingCashFlow)
             throw new Error("this Transaction is already Exist");
@@ -52,7 +53,7 @@ class CashFlowService {
         if (!cashFlowExists)
             throw new Error(`Transaction: ${id} does not exist!`);
         const existingCashFlow = await this.repository.findOne({
-            where: { categoryId: input.categoryId, type: input.type, remarks: input.remarks, date: input.date, amount: input.amount },
+            where: { categoryId: input.category, type: input.type, remarks: input.remarks, date: input.date, amount: input.amount },
         });
         await this.repository.updateOne({
             id: id,
@@ -91,6 +92,13 @@ class CashFlowService {
             limit,
             order: [[order, sort]],
             distinct: true,
+            include: [
+                {
+                    model: models_1.Category,
+                    as: 'categories',
+                    attributes: ['id', 'name', 'type']
+                }
+            ]
         });
     }
     async sum({ type, userId, fromDate, toDate, }) {
