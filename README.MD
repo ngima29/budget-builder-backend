@@ -5,8 +5,6 @@
 - node >= `16.x`
 - npm >= `v1.22.x`
 - Familiar with TypeScript 💪
-- Familiar with docker 💪
-
 
 ## How to use
 
