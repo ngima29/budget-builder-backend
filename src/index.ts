@@ -34,7 +34,7 @@ class Server {
       context: async ({ req }: { req: IncomingMessage }): Promise<ContextInterface> => {
         const token = req.headers.authorization as string;
         let user: UserInterface | undefined;
-     
+
         if (token) {
           user = await Guard.auth(token);
         }

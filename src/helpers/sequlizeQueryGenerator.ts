@@ -2,7 +2,7 @@ import * as Sequelize from 'sequelize'
 
 class SequlizeQueryGenerator {
   static instance: SequlizeQueryGenerator
-  constructor() {}
+  constructor() { }
 
   static get(): SequlizeQueryGenerator {
     if (!SequlizeQueryGenerator.instance) {

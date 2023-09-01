@@ -1,7 +1,7 @@
 class Base64 {
   private static instance: Base64;
 
-  private constructor() {}
+  private constructor() { }
 
   static get(): Base64 {
     if (!Base64.instance) {

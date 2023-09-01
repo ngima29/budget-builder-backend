@@ -3,12 +3,12 @@ import { Op, WhereOptions } from 'sequelize';
 import slug from 'slug';
 import { SequlizeQueryGenerator } from '../helpers';
 import {
- ArgsGoalInterface,
- InputGoalInterface,
- GoalInterface
+  ArgsGoalInterface,
+  InputGoalInterface,
+  GoalInterface
 } from '../interfaces'
 
-import {GoalRepository} from '../repositories'
+import { GoalRepository } from '../repositories'
 
 export class GoalService {
   private repository: GoalRepository
@@ -19,9 +19,9 @@ export class GoalService {
   async create(input: InputGoalInterface): Promise<GoalInterface> {
     const goalSlug = slug(input.name);
     const existingGoal = await this.repository.findOne({
-       where:{ slug: goalSlug, type:input.type}
+      where: { slug: goalSlug, type: input.type }
     })
-    if (existingGoal)  throw new Error(`goal name already Exist`);
+    if (existingGoal) throw new Error(`goal name already Exist`);
     input.slug = goalSlug;
     const goal = await this.repository.create(input);
     return await this.repository.findByPk(goal.id);
@@ -29,11 +29,11 @@ export class GoalService {
 
   async findByPk(id: number, options = { exclude: ['deletedAt'] }): Promise<GoalInterface> {
     const goalExists = await this.repository.findByPk(id);
-  
+
     if (!goalExists) {
       throw new Error(`Goal ${id} does not exist`);
     }
-  
+
     const currentDate = new Date();
     const progressPercentage = (goalExists.currentAmount / goalExists.totalAmount) * 100;
     const goalEndDate = new Date(goalExists.endDate);
@@ -43,7 +43,7 @@ export class GoalService {
     startDate.setHours(0, 0, 0, 0);
     const totalDays = Math.ceil((goalEndDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
     let remainingDays = Math.ceil((goalEndDate.getTime() - currentDate.getTime()) / (24 * 60 * 60 * 1000));
-    remainingDays = (remainingDays < 0)? remainingDays = 0:remainingDays;
+    remainingDays = (remainingDays < 0) ? remainingDays = 0 : remainingDays;
 
     const updatedGoal: GoalInterface = {
       id: goalExists.id,
@@ -59,25 +59,25 @@ export class GoalService {
       remainingDays,
       progressPercentage,
       totalDays,
-      createdAt:goalExists.createdAt,
+      createdAt: goalExists.createdAt,
       updatedAt: goalExists.updatedAt,
-    }  
+    }
     return updatedGoal
   }
   async updateOne(
     id: Sequelize.CreationOptional<number>,
     input: InputGoalInterface
   ): Promise<GoalInterface> {
-      const goalExists = await this.repository.findByPk(id)
-      if (!goalExists)  throw new Error(`goal ${id} does not exist`);
-      if(input.name){
-        const goalSlug = slug(input.name.toString());
-        const existingGoal = await this.repository.findOne({
-          where:{ slug:goalSlug, type:input.type },
-        })
-        if(existingGoal) throw new Error(`goal Name: ${input.name} is already exist`);
-        input.slug = goalSlug;
-      }
+    const goalExists = await this.repository.findByPk(id)
+    if (!goalExists) throw new Error(`goal ${id} does not exist`);
+    if (input.name) {
+      const goalSlug = slug(input.name.toString());
+      const existingGoal = await this.repository.findOne({
+        where: { slug: goalSlug, type: input.type },
+      })
+      if (existingGoal) throw new Error(`goal Name: ${input.name} is already exist`);
+      input.slug = goalSlug;
+    }
     await this.repository.updateOne({
       id: id,
       input: input,
@@ -125,7 +125,7 @@ export class GoalService {
       startDate.setHours(0, 0, 0, 0);
       const totalDays = Math.ceil((goalEndDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
       let remainingDays = Math.ceil((goalEndDate.getTime() - currentDate.getTime()) / (24 * 60 * 60 * 1000));
-      remainingDays = (remainingDays < 0)? remainingDays = 0:remainingDays;
+      remainingDays = (remainingDays < 0) ? remainingDays = 0 : remainingDays;
       const updatedGoal: GoalInterface = {
         id: row.id,
         userId: row.userId,
@@ -143,15 +143,15 @@ export class GoalService {
         createdAt: row.createdAt,
         updatedAt: row.updatedAt,
       };
-  
+
       return updatedGoal;
     });
-  
+
     return {
       count: result.count,
       rows: rowsWithCalculatedFields,
     };
   }
-  
-  }
+
+}
 

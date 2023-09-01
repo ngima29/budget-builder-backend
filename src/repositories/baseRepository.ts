@@ -74,13 +74,13 @@ interface RepositoryReader<RT> {
   }): Promise<{ count: number; rows: RT[] }>
   count({ where }: { where?: WhereOptions<any> }): Promise<number>;
   sum({ where }: { where?: WhereOptions<any> }, columnName: string): Promise<number>;
-  
+
 }
 
 export abstract class BaseRepository<IT, RT>
   implements RepositoryWriter<IT, RT>, RepositoryReader<RT>
 {
-  constructor(public readonly model: any) {}
+  constructor(public readonly model: any) { }
 
   findAll({
     where,
@@ -153,7 +153,7 @@ export abstract class BaseRepository<IT, RT>
   sum({ where }: { where?: WhereOptions<any> }, columnName: string): Promise<number> {
     return this.model.sum(columnName, { where });
   }
-  
+
   create(input: Partial<IT>, include?: IncludeOptions): Promise<RT> {
     return this.model.create(input, include)
   }

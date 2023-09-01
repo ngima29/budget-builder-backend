@@ -17,7 +17,6 @@ export class CategoryService {
   }
 
   async create(input: InputCategoryInterface): Promise<CategoryInterface> {
-    console.log(input)
     const categorySlug = slug(input.name);
     const existingCategory = await this.repository.findOne({
        where:{ slug: categorySlug, type:input.type}
@@ -40,13 +39,10 @@ export class CategoryService {
     return categoryExists;
   }
  async findOne( name: string | number):Promise<CategoryInterface> {
-  console.log(name)
      let where : WhereOptions <any> = {}
       if(name){
         const newName: string = name as string 
-        console.log(newName)
         let slugExist = slug(newName)
-        console.log(slugExist)
         where = {...where, slug:slugExist }
       }
       const categoryExist = this.repository.findOne({where:where})

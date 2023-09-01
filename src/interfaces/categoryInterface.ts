@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize';
-import {CategoryTypeEnum} from '../enums';
-import {ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
+import { CategoryTypeEnum } from '../enums';
+import { ModelTimestampExtend, PaginationOrderSearchExtend } from '.';
 
 
 export interface InputCategoryInterface {
@@ -11,19 +11,15 @@ export interface InputCategoryInterface {
 
 }
 
-export interface CategoryInterface extends ModelTimestampExtend {
+export interface CategoryInterface extends ModelTimestampExtend, InputCategoryInterface {
     id: Sequelize.CreationOptional<number>;
-    name: string;
-    userId: Sequelize.CreationOptional<number>;
-    slug: string;
-    type: CategoryTypeEnum; // enum income, expenses, other
 }
 
 
-export interface CategoryModelInterface extends Sequelize.Model<Partial<CategoryInterface>,Partial<InputCategoryInterface>>,
-CategoryInterface {}
+export interface CategoryModelInterface extends Sequelize.Model<Partial<CategoryInterface>, Partial<InputCategoryInterface>>,
+    CategoryInterface { }
 
 
-export  interface ArgsCategoryInterface extends PaginationOrderSearchExtend{
+export interface ArgsCategoryInterface extends PaginationOrderSearchExtend {
     type?: CategoryTypeEnum;
 }

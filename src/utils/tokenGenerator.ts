@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-dotenv.config(); 
+dotenv.config();
 
 class TokenGenerator {
   private static instance: TokenGenerator;

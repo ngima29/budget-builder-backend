@@ -6,7 +6,7 @@ import {
   InputLoginInterface
 } from '../interfaces';
 
-import {UserRepository} from '../repositories';
+import { UserRepository } from '../repositories';
 import { Password, TokenGenerator } from '../utils';
 
 
@@ -17,13 +17,13 @@ export class UserService {
   }
 
   async create(input: InputUserInterface): Promise<UserInterface> {
-    const existingUser = await this.repository.findOne({ 
-      where:{ email: input.email },
+    const existingUser = await this.repository.findOne({
+      where: { email: input.email },
     })
-   if (existingUser) throw new Error(` Email  : ${input.email} already exist!`);
-  if(input.password){
-    input.password =  await Password.generate(input.password)
-  }
+    if (existingUser) throw new Error(` Email  : ${input.email} already exist!`);
+    if (input.password) {
+      input.password = await Password.generate(input.password)
+    }
     const user = await this.repository.create(input)
     return user;
   }
@@ -53,7 +53,7 @@ export class UserService {
         where: { email: input.email?.trim() },
       })
       if (emailExists && emailExists.id !== id)
-        throw  new Error(`Email: ${input.email} is already exists!`)
+        throw new Error(`Email: ${input.email} is already exists!`)
     }
 
     await this.repository.updateOne({
@@ -65,31 +65,32 @@ export class UserService {
   }
 
 
-async deleteOne(id: number): Promise<boolean> {
-  const userExists = await this.repository.findByPk(id);
-  if (!userExists) throw new Error(`User: ${id} does not exist`);
+  async deleteOne(id: number): Promise<boolean> {
+    const userExists = await this.repository.findByPk(id);
+    if (!userExists) throw new Error(`User: ${id} does not exist`);
 
-  const remove = await this.repository.deleteOne(id);
-  if (remove === 0) throw new Error(`User: ${id} does not exist`);
-  return true;
-}
+    const remove = await this.repository.deleteOne(id);
+    if (remove === 0) throw new Error(`User: ${id} does not exist`);
+    return true;
+  }
 
   async login(input: InputLoginInterface): Promise<any> {
     const user = await this.repository.findOne({
-        where:  { email: input.email }
-      })
+      where: { email: input.email }
+    })
 
-    if (!user)   throw  new Error('Invalid Identifier or Password');
-     const validatePassword = await Password.validatePassword(input.password, user.password)
-     if (!validatePassword)   throw new Error('Invalid Identifier or Password')
-     if (user && validatePassword){
-       const userId = user.id
-       const token = await TokenGenerator.generateToken({userId}, 86400)
-       return {
+    if (!user) throw new Error('Invalid Identifier or Password');
+    const validatePassword = await Password.validatePassword(input.password, user.password)
+    if (!validatePassword) throw new Error('Invalid Identifier or Password')
+    if (user && validatePassword) {
+      const userId = user.id
+      const token = await TokenGenerator.generateToken({ userId }, 86400)
+      return {
         user,
-        token}
-     }
-   
+        token
+      }
+    }
+
   }
 
   findOne({

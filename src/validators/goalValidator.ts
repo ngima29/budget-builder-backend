@@ -1,6 +1,6 @@
 import Joi from "joi";
-import { stringSchema,positiveIntegerSchema, dateSchema } from "./schemas";
-import {list} from "../utils";
+import { stringSchema, positiveIntegerSchema, dateSchema } from "./schemas";
+import { list } from "../utils";
 import { GoalCategoryEnum } from "../enums";
 
 const createGoal = Joi.object({
@@ -10,7 +10,7 @@ const createGoal = Joi.object({
   endDate: dateSchema.label('Ens Date').required(),
   totalAmount: positiveIntegerSchema.label("Interest Rate").required(),
   currentAmount: positiveIntegerSchema.label("Interest Rate").required(),
-  remarks : stringSchema.label("Description ").allow(null, ''),
+  remarks: stringSchema.label("Description ").allow(null, ''),
 });
 
 const updateGoal = Joi.object({
@@ -20,7 +20,7 @@ const updateGoal = Joi.object({
   endDate: dateSchema.label('Ens Date'),
   totalAmount: positiveIntegerSchema.label("Total Amount"),
   currentAmount: positiveIntegerSchema.label("Current Amount").required(),
-  remarks : stringSchema.label("Description "),
-  });
+  remarks: stringSchema.label("Description "),
+});
 
-export { createGoal,updateGoal };
+export { createGoal, updateGoal };

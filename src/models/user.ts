@@ -1,10 +1,10 @@
 import * as Sequelize from "sequelize";
 import { Database } from "./instance";
-import { UserModelInterface} from "../interfaces";
+import { UserModelInterface } from "../interfaces";
 const sequelize = Database.sequelize;
 
 const User = sequelize.define<UserModelInterface>(
-"users",
+  "users",
   {
     id: {
       type: Sequelize.INTEGER,
@@ -45,4 +45,4 @@ const User = sequelize.define<UserModelInterface>(
   },
 );
 
-export {User};
+export { User };

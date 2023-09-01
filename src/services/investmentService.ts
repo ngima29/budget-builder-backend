@@ -3,12 +3,12 @@ import { Op, WhereOptions } from 'sequelize';
 import slug from 'slug';
 import { SequlizeQueryGenerator } from '../helpers';
 import {
-    InvestmentInterface,
-   InputInvestmentInterface,
-   ArgsInvestmentInterface
+  InvestmentInterface,
+  InputInvestmentInterface,
+  ArgsInvestmentInterface
 } from '../interfaces'
 
-import {InvestmentRepository} from '../repositories'
+import { InvestmentRepository } from '../repositories'
 
 export class InvestmentService {
   private repository: InvestmentRepository
@@ -19,9 +19,9 @@ export class InvestmentService {
   async create(input: InputInvestmentInterface): Promise<InvestmentInterface> {
     const investmentSlug = slug(input.name);
     const existingInvestment = await this.repository.findOne({
-       where:{ slug: investmentSlug, type:input.type}
+      where: { slug: investmentSlug, type: input.type }
     })
-    if (existingInvestment)  throw new Error(`Investment name already Exist`);
+    if (existingInvestment) throw new Error(`Investment name already Exist`);
     input.slug = investmentSlug;
     const investment = await this.repository.create(input);
     return investment;
@@ -34,7 +34,7 @@ export class InvestmentService {
   ): Promise<InvestmentInterface> {
     const investmentExists = await this.repository.findByPk(id)
 
-    if (!investmentExists)  throw new Error(`Investment ${id} does not exist`);
+    if (!investmentExists) throw new Error(`Investment ${id} does not exist`);
 
     return investmentExists;
   }
@@ -43,16 +43,16 @@ export class InvestmentService {
     id: Sequelize.CreationOptional<number>,
     input: InputInvestmentInterface
   ): Promise<InvestmentInterface> {
-      const investmentExists = await this.repository.findByPk(id)
-      if (!investmentExists)  throw new Error(`Investment ${id} does not exist`);
-      if(input.name){
-        const investmentSlug = slug(input.name.toString());
-        const existingInvestment = await this.repository.findOne({
-          where:{ slug:investmentSlug,type:input.type },
-        })
-        if(existingInvestment) throw new Error(`Investment Name: ${input.name} is already exist`);
-        input.slug = investmentSlug;
-      }
+    const investmentExists = await this.repository.findByPk(id)
+    if (!investmentExists) throw new Error(`Investment ${id} does not exist`);
+    if (input.name) {
+      const investmentSlug = slug(input.name.toString());
+      const existingInvestment = await this.repository.findOne({
+        where: { slug: investmentSlug, type: input.type },
+      })
+      if (existingInvestment) throw new Error(`Investment Name: ${input.name} is already exist`);
+      input.slug = investmentSlug;
+    }
     await this.repository.updateOne({
       id: id,
       input: input,
@@ -70,7 +70,7 @@ export class InvestmentService {
     return true;
   }
 
-  findAndCountAll({ offset, limit, query, sort, order, type  }: ArgsInvestmentInterface): Promise<{
+  findAndCountAll({ offset, limit, query, sort, order, type }: ArgsInvestmentInterface): Promise<{
     count: number;
     rows: InvestmentInterface[];
   }> {
@@ -80,13 +80,13 @@ export class InvestmentService {
         ...where,
         [Sequelize.Op.or]: SequlizeQueryGenerator.searchRegex({
           query,
-          columns: ['name','amount'],
+          columns: ['name', 'amount'],
         }),
       };
     }
-    if(type) {
-        where = { ...where, type:type };
-      }
+    if (type) {
+      where = { ...where, type: type };
+    }
     return this.repository.findAndCountAll({
       where,
       offset,
@@ -111,7 +111,7 @@ export class InvestmentService {
     if (fromDate && toDate) {
       where = { ...where, createdAt: { [Sequelize.Op.between]: [fromDate, toDate] } };
     }
-    return await this.repository.sum( {where }, 'amount');
+    return await this.repository.sum({ where }, 'amount');
   }
-  }
+}
 

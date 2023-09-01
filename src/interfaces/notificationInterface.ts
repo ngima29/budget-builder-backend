@@ -6,13 +6,10 @@ export interface InputNotificationInterface {
     data: string;
 }
 
-export interface NotificationInterface {
+export interface NotificationInterface extends InputNotificationInterface {
     id: Sequelize.CreationOptional<number>
-    type: string;
-    readAt: string;
-    data: string;
 }
 
 
-export interface NotificationModelInterface extends Sequelize.Model<Partial<NotificationInterface>,Partial<InputNotificationInterface>>,
-NotificationInterface {}
+export interface NotificationModelInterface extends Sequelize.Model<Partial<NotificationInterface>, Partial<InputNotificationInterface>>,
+    NotificationInterface { }

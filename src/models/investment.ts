@@ -53,7 +53,7 @@ const Investment = sequelize.define<InvestmentModelInterface>(
         indexes: [
           {
               unique: true,
-              name: 'investments_slug_type',
+              name: 'investments_sFlug_type',
               fields: ['slug','type'],
               where :{
                   deleted_at: null,

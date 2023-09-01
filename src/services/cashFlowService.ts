@@ -3,13 +3,13 @@ import { Op, WhereOptions } from 'sequelize';
 import slug from 'slug';
 import { Category } from '../models';
 import {
-   CashFlowInterface,
-   InputCashFlowInterface,
-   ArgsCashFlowInterface
+  CashFlowInterface,
+  InputCashFlowInterface,
+  ArgsCashFlowInterface
 } from '../interfaces'
 import { SequlizeQueryGenerator } from '../helpers';
-import {CashFlowRepository} from '../repositories'
-import {CategoryTypeEnum} from '../enums'
+import { CashFlowRepository } from '../repositories'
+import { CategoryTypeEnum } from '../enums'
 
 export class CashFlowService {
   private repository: CashFlowRepository
@@ -18,11 +18,11 @@ export class CashFlowService {
   }
 
   async create(input: InputCashFlowInterface): Promise<CashFlowInterface> {
-    const existingCashFlow= await this.repository.findOne({
-       where:{ categoryId: input.category,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
+    const existingCashFlow = await this.repository.findOne({
+      where: { categoryId: input.category, type: input.type, remarks: input.remarks, date: input.date, amount: input.amount },
     })
     if (existingCashFlow) throw new Error("this Transaction is already Exist");
- 
+
     const cashFlow = await this.repository.create(input);
     return cashFlow;
   }
@@ -41,11 +41,11 @@ export class CashFlowService {
     id: Sequelize.CreationOptional<number>,
     input: InputCashFlowInterface
   ): Promise<CashFlowInterface> {
-      const cashFlowExists = await this.repository.findByPk(id)
-       if (!cashFlowExists) throw new Error(`Transaction: ${id} does not exist!`)
-       const existingCashFlow= await this.repository.findOne({
-        where:{ categoryId: input.category,type:input.type , remarks: input.remarks, date:input.date, amount:input.amount},
-     })
+    const cashFlowExists = await this.repository.findByPk(id)
+    if (!cashFlowExists) throw new Error(`Transaction: ${id} does not exist!`)
+    const existingCashFlow = await this.repository.findOne({
+      where: { categoryId: input.category, type: input.type, remarks: input.remarks, date: input.date, amount: input.amount },
+    })
     await this.repository.updateOne({
       id: id,
       input: input,
@@ -56,13 +56,13 @@ export class CashFlowService {
   async deleteOne(id: number): Promise<boolean> {
     const cashFlowExists = await this.repository.findByPk(id);
     if (!cashFlowExists) throw new Error(`Transaction: ${id} does not exist`);
-  
+
     const remove = await this.repository.deleteOne(id);
     if (remove === 0) throw new Error(`Transaction: ${id} does not exist`);
     return true;
   }
 
-  findAndCountAll({ offset, limit, query, sort, order, type  }: ArgsCashFlowInterface): Promise<{
+  findAndCountAll({ offset, limit, query, sort, order, type }: ArgsCashFlowInterface): Promise<{
     count: number;
     rows: CashFlowInterface[];
   }> {
@@ -74,24 +74,24 @@ export class CashFlowService {
         ...where,
         [Sequelize.Op.or]: SequlizeQueryGenerator.searchRegex({
           query,
-          columns: ['type','amount','categoryId'],
+          columns: ['type', 'amount', 'categoryId'],
         }),
       };
     }
-    if(type) {
-        where = { ...where, type:type };
-      }
+    if (type) {
+      where = { ...where, type: type };
+    }
     return this.repository.findAndCountAll({
       where,
       offset,
       limit,
       order: [[order, sort]],
       distinct: true,
-      include:[
+      include: [
         {
           model: Category,
           as: 'categories',
-          attributes:['id', 'name','type']
+          attributes: ['id', 'name', 'type']
         }
       ]
     });
@@ -111,16 +111,16 @@ export class CashFlowService {
     if (userId) {
       where = { ...where, userId: userId };
     }
-   
+
     if (fromDate && toDate) {
       where = { ...where, createdAt: { [Sequelize.Op.between]: [fromDate, toDate] } };
     }
 
-    if(type){
-      where = { ...where, type:type };
+    if (type) {
+      where = { ...where, type: type };
     }
 
-    return await this.repository.sum( {where }, 'amount');
+    return await this.repository.sum({ where }, 'amount');
   }
-  }
+}
 

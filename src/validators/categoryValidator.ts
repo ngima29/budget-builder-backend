@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { stringSchema } from "./schemas";
-import {list} from "../utils";
+import { list } from "../utils";
 import { CategoryTypeEnum } from "../enums";
 
 const createCategory = Joi.object({
@@ -13,6 +13,6 @@ const updateCategory = Joi.object({
   name: stringSchema.label("Name"),
   type: stringSchema.label("Types").valid(...list(CategoryTypeEnum)),
 
-  });
+});
 
-export { createCategory,updateCategory };
+export { createCategory, updateCategory };

@@ -1,7 +1,7 @@
 import * as Sequelize from "sequelize";
-import { CashFlowModelInterface} from '../interfaces';
+import { CashFlowModelInterface } from '../interfaces';
 import { Database } from "./instance";
-import {CategoryTypeEnum} from "../enums";
+import { CategoryTypeEnum } from "../enums";
 
 const sequelize = Database.sequelize;
 
@@ -14,52 +14,52 @@ const CashFlow = sequelize.define<CashFlowModelInterface>(
             autoIncrement: true,
             primaryKey: true,
         },
-        userId:{
+        userId: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
-              model: 'users',
-              key: 'id',
+                model: 'users',
+                key: 'id',
             },
         },
-        category:{
+        category: {
             type: Sequelize.INTEGER,
             references: {
-              model: 'categories',
-              key: 'id',
+                model: 'categories',
+                key: 'id',
             },
-            field:'categoryId',
+            field: 'categoryId',
         },
-        goal:{
+        goal: {
             type: Sequelize.INTEGER,
-            allowNull:true,
+            allowNull: true,
             references: {
-              model: 'goals',
-              key: 'id',
+                model: 'goals',
+                key: 'id',
             },
-            field:'goalId',
+            field: 'goalId',
         },
-        amount:{
+        amount: {
             type: Sequelize.NUMBER,
-            allowNull: false,   
+            allowNull: false,
         },
-        remarks:{
+        remarks: {
             type: Sequelize.STRING,
-            allowNull:true,
+            allowNull: true,
         },
-        date:{
+        date: {
             type: Sequelize.DATEONLY,
-            allowNull: false,   
+            allowNull: false,
         },
         type: {
-            type: Sequelize.ENUM(CategoryTypeEnum.expenses,CategoryTypeEnum.income,CategoryTypeEnum.others),
+            type: Sequelize.ENUM(CategoryTypeEnum.expenses, CategoryTypeEnum.income, CategoryTypeEnum.others),
             allowNull: false,
         }
 
-    },{
-        timestamps :true,
-        paranoid: true,
-    },
+    }, {
+    timestamps: true,
+    paranoid: true,
+},
 );
 
-export { CashFlow};
+export { CashFlow };

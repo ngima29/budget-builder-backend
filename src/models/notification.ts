@@ -21,8 +21,8 @@ const Notification = sequelize.define<NotificationModelInterface>(
     readAt: {
       type: Sequelize.STRING,
     },
-    data:{
-        type: Sequelize.TEXT,
+    data: {
+      type: Sequelize.TEXT,
     }
   },
   {
